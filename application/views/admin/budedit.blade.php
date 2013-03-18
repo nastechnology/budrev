@@ -39,7 +39,7 @@
 <div class="content">
 @include('plugins.status')
 <div class="page-header"><h1>Budgets <small>Edit Proposed Budgets</small></h1></div>
-<form name='budreport' method='post' action='/admin/bud'>
+<form name='budreport' method='post' action='/admin/budedit'>
 <table class='table-striped table'>
 	<thead>
 		<tr>

@@ -32,7 +32,32 @@ class Home_Controller extends Base_Controller {
 
 	public function action_index()
 	{
-		return View::make('home.index');
+
+		if(isset($_GET['key'])){
+			$arrProposed = array();
+			if($_GET['p']){
+				// Revenue
+				$entries = RevenueProposed::all();
+				foreach($entries as $rp){
+					if($rp->key == $_GET['key']){
+						$arrProposed[] = $rp;
+					}
+				}
+			} else {
+				// Budget
+				$entries = BudgetProposed::all();
+				foreach ($entries as $bp) {
+					if($bp->key == $_GET['key']){
+						$arrProposed[] = $bp;
+					}
+				}
+			}
+
+			return View::make('home.index2', array('entries'=>$arrProposed));
+		} else {
+			return View::make('home.index');
+		}
+		
 	}
 
 }

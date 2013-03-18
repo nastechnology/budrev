@@ -11,6 +11,6 @@ class Budget extends Eloquent {
 
 	public function proposed()
 	{
-		return $this->has_many_and_belongs_to('BudgetProposed', 'budget_proposed');
+		return $this->has_one('BudgetProposed');
 	}
 }

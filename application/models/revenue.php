@@ -11,6 +11,6 @@ class Revenue extends Eloquent {
 
 	public function proposed()
 	{
-		return $this->has_many_and_belongs_to('RevenueProposed', 'revenue_proposed');
+		return $this->has_one('RevenueProposed');
 	}
 }

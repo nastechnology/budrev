@@ -37,7 +37,7 @@
 @endsection
 @section('content')
 <div class="content">
-
+@include('plugins.status')
 Welcome to the Admin Page please use the menu above. 
 
 </div>

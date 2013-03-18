@@ -70,7 +70,33 @@ class Admin_Controller  extends Base_Controller {
 	{
 		if(Session::has('user') || Auth::user()){
 			if(Input::has('submit')){
-				var_dump(Input::get('bud'));
+				$buds = Input::get('bud');
+				$temp = md5(microtime()+rand());
+    			$key = strtoupper(substr($temp, 0, 6));
+    			$fyyear = "FY".(date('y')+1);
+    			$email = Input::get('email');
+    			$arrInsert = array();
+    			foreach($buds as $keyid=>$value) {
+    				$bud = Budget::find($value);
+    				$bud->is_proposed = '1';
+    				$bud->save();
+    				$arrInsert[] = array('budget_id'=>$value,'key'=>$key,'fyyear'=>$fyyear);
+    			}
+
+    			BudgetProposed::insert($arrInsert);
+
+    			$body = "\n\n***This site can only be used while on the school district's network.***\n\n";
+    			$body.= "Please go to the following URL to setup your proposed revenues for next school year. Please open the link using Firefox or Chrome, copy and paste the link into the url bar.\n";
+    			$body.= "http://budrev2.dev/?key=".$key."\n\n";
+    			$body.= "Thank You,\nSara Buchhop";
+
+    			if(mail($email,'[Budget]',$body,'From: sara.buchhop@napoleonareaschools.org')){
+    				Session::flash('status_success', 'Successfully Emailed '.$email.' Regarding Budgets');
+    				return Redirect::to('/admin/bud');
+    			} else {
+    				Session::flash('status_error', 'There was an error sending the email');
+    				return Redirect::to('/admin/bud');
+    			}
 			} else {
 				$budgets = Budget::where('is_proposed','=',0)->get();
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
@@ -86,12 +112,22 @@ class Admin_Controller  extends Base_Controller {
 	public function action_budedit()
 	{
 		if(Session::has('user') || Auth::user()){
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
 			if(Input::has('submit')){
-				$buds = Input::get('bud');
+				// Save Budget Proposed
+				$values = Input::get();
+				foreach($values as $name=>$value){
+					if($name != 'submit'){
+						list($p,$budget_id) = explode("-",$name);
+						$bud = Budget::find($budget_id)->proposed()->first();
+						$bud->proposed = $value;
+						$bud->save();
+					}
+				}
+				Session::flash('status_success', 'Successfully updated Unproposed Budgets');
+				return Redirect::to('admin/bud');
 			} else {
-				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
-				$rBadge = $this->_getTotal() - $this->_getProposed();
-
 				$entries = BudgetProposed::all();
 
 		    	$arrBudgets = array();
@@ -120,11 +156,36 @@ class Admin_Controller  extends Base_Controller {
 	public function action_buddelete()
 	{
 		if(Session::has('user') || Auth::user()){
-			
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			if(Input::has('submit')){
 				$fyyear = Input::get('fyyear');
+				$bp = BudgetProposed::all();
+				$arrBudExpInsert = array();
+				foreach($bp as $budprop){
+					if($budprop->fyyear == $fyyear){
+						if($budprop->proposed == null){
+							$budprop->proposed = '0';
+						}
+						$arrBudExpInsert[] = array('revenue_id'=>$budprop->revenue_id,'fyyear'=>$budprop->fyyear,'amount'=>$budprop->proposed);
+						$revprop->delete();
+					}
+				}
+				
+				if(sizeof($arrBudExpInsert) > 0){
+					foreach($arrBudExpInsert as $buds){
+						$bud = Budget::find($buds['revenue_id']);
+						$budbud->is_proposed = '0';
+						$bud->save();
+						$be = new BudgetExpeneded($buds);
+						$be->save();
+					}
+					Session::flash('status_success', 'Successfully removed '.$fyyear);
+				} else {
+					Session::flash('status_error', 'There was an error removing '.$fyyear);
+				}
+
+				return View::make('admin.buddelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
 				
 			} else {
 				return View::make('admin.buddelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
@@ -134,15 +195,24 @@ class Admin_Controller  extends Base_Controller {
 			return View::make('admin.index2');
 		}
 
+
 	}
 
 
 	public function action_budunproposed()
 	{
 		if(Session::has('user') || Auth::user()){
-			$bud = new Budget(array('is_proposed'=>'0'));
-			$bud->save();
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
+			$buds = Budget::all();
+			foreach($buds as $bud){
+				if($bud->is_proposed == 1){
+					$bud->is_proposed = '0';
+					$bud->save();
+				}
+			}
 			Session::flash('status_success', 'Successfully set all budgets as unproposed');
+			return View::make('admin.index')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
@@ -177,7 +247,7 @@ class Admin_Controller  extends Base_Controller {
     			$body.= "http://budrev2.dev/?key=".$key."&p=rev\n\n";
     			$body.= "Thank You,\nSara Buchhop";
 
-    			if(mail($email,'[Revenu]',$body,'From: sara.buchhop@napoleonareaschools.org')){
+    			if(mail($email,'[Revenue]',$body,'From: sara.buchhop@napoleonareaschools.org')){
     				Session::flash('status_success', 'Successfully Emailed '.$email.' Regarding Revenues');
     				return Redirect::to('/admin/rev');
     			} else {
@@ -201,7 +271,18 @@ class Admin_Controller  extends Base_Controller {
 	{
 		if(Session::has('user') || Auth::user()){
 			if(Input::has('submit')){
-				var_dump(Input::get('rev'));
+				// Save Revenue Proposed
+				$values = Input::get();
+				foreach($values as $name=>$value){
+					if($name != 'submit'){
+						list($p,$revenue_id) = explode("-",$name);
+						$rev = Revenue::find($revenue_id)->proposed()->first();
+						$rev->proposed = $value;
+						$rev->save();
+					}
+				}
+				Session::flash('status_success', 'Successfully updated Unproposed Revenues');
+				return Redirect::to('admin/rev');
 			} else {
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 				$rBadge = $this->_getTotal() - $this->_getProposed();
@@ -242,13 +323,22 @@ class Admin_Controller  extends Base_Controller {
 				$arrRevRecInsert = array();
 				foreach($rp as $revprop){
 					if($revprop->fyyear == $fyyear){
+						if($revprop->proposed == null){
+							$revprop->proposed = '0';
+						}
 						$arrRevRecInsert[] = array('revenue_id'=>$revprop->revenue_id,'fyyear'=>$revprop->fyyear,'amount'=>$revprop->proposed);
 						$revprop->delete();
 					}
 				}
+				
 				if(sizeof($arrRevRecInsert) > 0){
-					$rev = new Revenue(array('is_proposed'=>'0'));
-					$rev->save();
+					foreach($arrRevRecInsert as $rps){
+						$rev = Revenue::find($rps['revenue_id']);
+						$rev->is_proposed = '0';
+						$rev->save();
+						$rr = new RevenueReceived($rps);
+						$rr->save();
+					}
 					Session::flash('status_success', 'Successfully removed '.$fyyear);
 				} else {
 					Session::flash('status_error', 'There was an error removing '.$fyyear);
@@ -269,9 +359,17 @@ class Admin_Controller  extends Base_Controller {
 	public function action_revunproposed()
 	{
 		if(Session::has('user') || Auth::user()){
-			$rev = new Revenue(array('is_proposed'=>'0'));
-			$rev->save();
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
+			$revs = Revenue::all();
+			foreach($revs as $rev){
+				if($rev->is_proposed == 1){
+					$rev->is_proposed = '0';
+					$rev->save();
+				}
+			}
 			Session::flash('status_success', 'Successfully set all revenues as unproposed');
+			return View::make('admin.index')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
