@@ -42,7 +42,7 @@ class Home_Controller extends Base_Controller {
 					// Form Submitted
 					$values = Input::get();
 					foreach($values as $name=>$value){
-						if($name != 'submit'){
+						if($name != 'submit' && $name != 'key' && $name != 'p'){
 							list($p,$revenue_id) = explode("-",$name);
 							$rev = Revenue::find($revenue_id)->proposed()->first();
 							$rev->proposed = $value;
@@ -77,14 +77,15 @@ class Home_Controller extends Base_Controller {
 					// Form Submitted
 					$values = Input::get();
 					foreach($values as $name=>$value){
-						if($name != 'submit'){
+						if($name != 'submit' && $name != 'key'){
 							list($p,$budget_id) = explode("-",$name);
-							$bud = Budget::find($budget_id)->proposed()->first();
-							$bud->proposed = $value;
-							$bud->save();
+							
+							$bp = Budget::find($budget_id)->proposed()->first();
+							$bp->proposed = $value;
+							$bp->save();
 						}
 					}
-					exit();
+					
 					Session::flash('status_success', 'Your proposed budget has been submitted');
 					return Redirect::home();
 				} else {
