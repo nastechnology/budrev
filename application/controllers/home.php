@@ -34,26 +34,80 @@ class Home_Controller extends Base_Controller {
 	{
 
 		if(isset($_GET['key'])){
-			$arrProposed = array();
-			if($_GET['p']){
+	    	$arrExpended = array();
+	    	$arrProposed = array();
+			if(isset($_GET['p'])){
 				// Revenue
-				$entries = RevenueProposed::all();
-				foreach($entries as $rp){
-					if($rp->key == $_GET['key']){
-						$arrProposed[] = $rp;
+				if(Input::has('submit')){
+					// Form Submitted
+					$values = Input::get();
+					foreach($values as $name=>$value){
+						if($name != 'submit'){
+							list($p,$revenue_id) = explode("-",$name);
+							$rev = Revenue::find($revenue_id)->proposed()->first();
+							$rev->proposed = $value;
+							$rev->save();
+						}
 					}
-				}
+					Session::flash('status_success', 'Your proposed revenue has been submitted');
+					return Redirect::home();
+				} else {
+					$entries = RevenueProposed::all();
+					$arrRevenues = array();
+					foreach($entries as $key=>$rp){
+						$arrRevenues[$rp->revenue_id] = Revenue::find($rp->revenue_id);
+						$string = "";
+
+						$model = $rp->attributes;
+						if($model['key'] == $_GET['key']){
+							$arrProposed[] = $rp;
+							foreach (Revenue::find($rp->revenue_id)->received()->get() as $value) {
+				    			$string .= $value->fyyear . " : $".$value->amount."\n";
+				    		}
+						}
+
+						$arrExpended[$rp->revenue_id] = $string;
+			    		$arrProposed[$rp->revenue_id] = $rp->proposed;
+					}
+			    	return View::make('home.index2', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
+		    	}
 			} else {
 				// Budget
-				$entries = BudgetProposed::all();
-				foreach ($entries as $bp) {
-					if($bp->key == $_GET['key']){
-						$arrProposed[] = $bp;
+				if(Input::has('submit')){
+					// Form Submitted
+					$values = Input::get();
+					foreach($values as $name=>$value){
+						if($name != 'submit'){
+							list($p,$budget_id) = explode("-",$name);
+							$bud = Budget::find($budget_id)->proposed()->first();
+							$bud->proposed = $value;
+							$bud->save();
+						}
 					}
+					exit();
+					Session::flash('status_success', 'Your proposed budget has been submitted');
+					return Redirect::home();
+				} else {
+					$entries = BudgetProposed::all();
+					$arrBudgets = array();
+					foreach ($entries as $key=>$bp) {
+						$arrBudgets[$bp->budget_id] = Budget::find($bp->budget_id);
+						$string = "";
+						$model = $bp->attributes;
+						if($model['key'] == $_GET['key']){
+							$arrProposed[] = $bp;
+							
+							foreach (Budget::find($bp->budget_id)->expended()->get() as $key=>$value) {
+				    			$string .= $value->fyyear . " : $".$value->amount."\n";
+				    		}
+						}
+
+						$arrExpended[$bp->budget_id] = $string;
+			    		$arrProposed[$bp->budget_id] = $bp->proposed;		    		
+					}
+					return View::make('home.index2', array('budgets'=>$arrBudgets,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
 				}
 			}
-
-			return View::make('home.index2', array('entries'=>$arrProposed));
 		} else {
 			return View::make('home.index');
 		}

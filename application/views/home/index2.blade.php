@@ -1,9 +1,9 @@
 @layout('layouts/main')
 @section('content')
 <div class="content">
-	@if( $_GET[p])
+	@if( isset($_GET['p']))
 		<div class="page-header"><h1>Revenues <small>Edit Proposed Revenues</small></h1></div>
-		<form name='budreport' method='post' action='/admin/bud'>
+		<form name='budreport' method='post' action='/?key={{ $key }}&p=rev'>
 		<table class='table-striped table'>
 			<thead>
 				<tr>
@@ -19,7 +19,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($entries as $revenue)
+				@foreach($revenues as $revenue)
 					<tr>
 						<td>{{ $revenue->ti }}</td>
 						<td>{{ $revenue->fund }}</td>
@@ -39,7 +39,7 @@
 		<br/><input type='submit' name='submit' class="btn" value='Submit' /></form>
 	@else
 		<div class="page-header"><h1>Budgets <small>Proposed Budgets</small></h1></div>
-		<form name='budreport' method='post' action='/admin/bud'>
+		<form name='budreport' method='post' action='/?key={{ $key }}'>
 		<table class='table-striped table'>
 			<thead>
 				<tr>
@@ -58,7 +58,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach($entries as $budget)
+				@foreach($budgets as $budget)
 					<tr>
 						<td>{{ $budget->ti }}</td>
 						<td>{{ $budget->fund }}</td>
