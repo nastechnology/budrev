@@ -14,7 +14,7 @@ return array(
 	|
 	*/
 
-	'profile' => true,
+	'profile' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql_dev',
+	'default' => 'mysql_prod',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -64,16 +64,6 @@ return array(
 		'sqlite' => array(
 			'driver'   => 'sqlite',
 			'database' => 'application',
-			'prefix'   => '',
-		),
-
-		'mysql_dev' => array(
-			'driver'   => 'mysql',
-			'host'     => '127.0.0.1',
-			'database' => 'budrevs',
-			'username' => 'root',
-			'password' => '',
-			'charset'  => 'utf8',
 			'prefix'   => '',
 		),
 
