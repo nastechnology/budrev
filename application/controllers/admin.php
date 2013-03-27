@@ -4,10 +4,10 @@ class Admin_Controller  extends Base_Controller {
 	
 	public function action_index()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
-			return View::make('admin.index')->with('bBadge', $bBadge)->with('rBadge',$rBadge);
+			return View::make('admin.index')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
@@ -45,8 +45,15 @@ class Admin_Controller  extends Base_Controller {
 				// Authenticated against LDAP now check to see if they 
 				// are allowed to access resource.
 				if(User::where('username','=',$username)->first()){
-					Session::put('user', Auth::user());
-		        	return Redirect::to('admin/index');
+					$user = User::where('username','=',Auth::user()->name)->first();
+					Session::put('user',$user);
+					if($user->is_sa){
+						Session::put('sa',1);
+						return Redirect::to('admin/index');
+					} else {
+						return Redirect::to('admin/building/index');
+					}
+		        	
 		        } else {
 		        	Session::flash('login_error','You do not have access to this app.');
 		        	return View::make('admin.index2');
@@ -68,7 +75,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_bud()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			if(Input::has('submit')){
 				$buds = Input::get('bud');
 				$temp = md5(microtime()+rand());
@@ -101,7 +108,7 @@ class Admin_Controller  extends Base_Controller {
 				$budgets = Budget::where('is_proposed','=',0)->get();
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 				$rBadge = $this->_getTotal() - $this->_getProposed();
-				return View::make('admin.bud', array('budgets'=>$budgets))->with('bBadge', $bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.bud', array('budgets'=>$budgets))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -111,7 +118,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_budedit()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			if(Input::has('submit')){
@@ -145,7 +152,7 @@ class Admin_Controller  extends Base_Controller {
 		    		$arrProposed[$obj->budget_id] = $obj->proposed;
 		    	}
 
-				return View::make('admin.budedit', array('budgets'=>$arrBudgets,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('bBadge', $bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.budedit', array('budgets'=>$arrBudgets,'entries'=>$arrProposed,'expended'=>$arrExpended))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -155,7 +162,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_buddelete()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			if(Input::has('submit')){
@@ -185,10 +192,10 @@ class Admin_Controller  extends Base_Controller {
 					Session::flash('status_error', 'There was an error removing '.$fyyear);
 				}
 
-				return View::make('admin.buddelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.buddelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 				
 			} else {
-				return View::make('admin.buddelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.buddelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -201,7 +208,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_budunproposed()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			$buds = Budget::all();
@@ -224,7 +231,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_rev()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 
 			if(Input::has('submit')){
 				$revs = Input::get('rev');
@@ -259,7 +266,7 @@ class Admin_Controller  extends Base_Controller {
 				$revenue = Revenue::where('is_proposed','=',0)->get();
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 				$rBadge = $this->_getTotal() - $this->_getProposed();
-				return View::make('admin.rev', array('revenues'=>$revenue))->with('bBadge', $bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.rev', array('revenues'=>$revenue))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -269,7 +276,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_revedit()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			if(Input::has('submit')){
 				// Save Revenue Proposed
 				$values = Input::get();
@@ -304,7 +311,7 @@ class Admin_Controller  extends Base_Controller {
 		    		$arrProposed[$obj->revenue_id] = $obj->proposed;
 		    	}
 
-				return View::make('admin.revedit', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('bBadge', $bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.revedit', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -314,7 +321,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_revdelete()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			if(Input::has('submit')){
@@ -344,10 +351,10 @@ class Admin_Controller  extends Base_Controller {
 					Session::flash('status_error', 'There was an error removing '.$fyyear);
 				}
 
-				return View::make('admin.revdelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.revdelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 				
 			} else {
-				return View::make('admin.revdelete')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
+				return View::make('admin.revdelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
 		} else {
 			Session::forget('login_error');
@@ -358,7 +365,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_revunproposed()
 	{
-		if(Session::has('user') || Auth::user()){
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			$revs = Revenue::all();
@@ -369,7 +376,7 @@ class Admin_Controller  extends Base_Controller {
 				}
 			}
 			Session::flash('status_success', 'Successfully set all revenues as unproposed');
-			return View::make('admin.index')->with('bBadge',$bBadge)->with('rBadge',$rBadge);
+			return View::make('admin.index')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
@@ -378,25 +385,5 @@ class Admin_Controller  extends Base_Controller {
 
 	/* End Revenue Section */
 
-	/* Private Methods */
-
-	private function _getProposed($type=null){
-		if($type == "budget"){
-			return BudgetProposed::count();
-		} else {
-			// type equals revenue
-			return RevenueProposed::count();
-		}
-	}
-
-	private function _getTotal($type=null){
-		if($type == "budget"){
-			return Budget::count();
-		} else {
-			// type equals revenue
-			return Revenue::count();
-		}
-	}
-
-	/* End Private Methods */
+	
 }
