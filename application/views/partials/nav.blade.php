@@ -36,8 +36,12 @@
 	</li>
 	<li class="dropdown" id="menu4"><a class="dropdown-toggle" data-toggle="dropdown" href="#menu4">Building Bud/Rev<b class="caret"></b></a>
 		<ul class="dropdown-menu">
-			<li><a href="/admin/budget">Budgets</a></li>
-			<li><a href="/admin/revenue">Revenues</a></li>
+			<li><a href="/admin/budget">Total Budgets</a></li>
+			<li><a href="/admin/budget/view">Submitted Budgets</a></li>
+			<li><a href="/admin/budget/edit">Edit Budgets</a></li>
+			<li class="divider"></li>
+			<li><a href="/admin/revenue">Submitted Revenue</a></li>
+			<li><a href="/admin/revenue/edit">Edit Revenues</a></li>
 		</ul>
 	</li>
 	<li class="dropdown" id="menu5"><a class="dropdown-toggle" data-toggle="dropdown" href="#menu5">Export<b class="caret"></b></a>

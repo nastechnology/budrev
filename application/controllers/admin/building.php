@@ -17,6 +17,29 @@ class Admin_Building_Controller extends Base_Controller {
 		if(Session::has('user')){
 			if(Input::has('submit')){
 				// Submitted Budget
+				$values = Input::get();
+				$submit = array_pop($values);
+
+				$fy = "FY".(date('y')+1);
+				foreach ($values as $name=>$value) {
+					list($p,$buildingbudget_id) = explode("-",$name);
+					$bbp = new BuildingBudgetProposed;
+					$bb = BuildingBudget::find($buildingbudget_id);
+					$bb->is_proposed = '1';
+
+					$bbp->buildingbudget_id = $buildingbudget_id;
+					$bbp->fyyear = $fy;
+					if($value == null || $value == ""){
+						$bbp->amount = '0.00';
+					} else {
+						$bbp->amount = $value;
+					}
+
+					$bb->save();
+					$bbp->save();
+				}
+				Session::flash('status_success', 'Your proposed building budget has been submitted');
+				return Redirect::to('/admin/building');
 			} else {
 				$user = Session::get('user');
 				if(isset($_GET['building'])){
@@ -54,11 +77,65 @@ class Admin_Building_Controller extends Base_Controller {
 		}
 	}
 
-	public function aciton_revenue()
+	public function action_revenue()
 	{
 		if(Session::has('user')){
-			$user = Session::get('user');
-			var_dump($user);
+			if(Input::has('submit')){
+				// Submitted Revenues
+				$values = Input::get();
+				$submit = array_pop($values);
+
+				$fy = "FY".(date('y')+1);
+				foreach ($values as $name=>$value) {
+					list($p,$buildingrevenue_id) = explode("-",$name);
+					$brp = new BuildingRevenueProposed;
+					$br = BuildingRevenue::find($buildingrevenue_id);
+					$br->is_proposed = '1';
+
+					$brp->buildingrevenue_id = $buildingrevenue_id;
+					$brp->fyyear = $fy;
+					if($value == null || $value == ""){
+						$brp->amount = '0.00';
+					} else {
+						$brp->amount = $value;
+					}
+
+					$br->save();
+					$brp->save();
+				}
+				Session::flash('status_success', 'Your proposed building Revenues has been submitted');
+				return Redirect::to('/admin/building');
+			} else {
+				$user = Session::get('user');
+				if(isset($_GET['building'])){
+					$entries = BuildingRevenue::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->get();
+				} else {
+					$entries = BuildingRevenue::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
+				}
+			
+				if(sizeof($entries)>0){
+					$arrRevs = array();
+			    	$arrExpended = array();
+			    	$arrProposed = array();
+					foreach($entries as $key=>$obj){
+			    		$arrRevs[] = $obj;
+			    		$string = "";
+			    		
+			    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
+
+			    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
+			    			$string .= $value->fyyear . " : $".$value->amount."\n";
+			    			Log::write("info", $obj->id.":::".$string);
+			    		}
+
+			    		
+			    		$arrExpended[$obj->id] = $string;
+			    	}
+					return View::make('admin.buildingrevenue', array('revenues'=>$arrRevs,'expended'=>$arrExpended))->nest('nav','partials.nav2');
+				} else {
+					return View::make('admin.buildingrevenue2')->nest('nav','partials.nav2');
+				}
+			}
 		} else {
 			return View::make('admin.index2');
 		}
@@ -68,16 +145,57 @@ class Admin_Building_Controller extends Base_Controller {
 	{
 		if(Session::has('user')){
 			$user = Session::get('user');
-			$entries = BuildingBudget::where('building_id','=',$user->building_id);
-			header('Content-type: text/csv');
-    		header('Content-Disposition: attachment;filename=BUILDBUDPROPOSED.csv');
-    		$fp = fopen('php://output','w');
-    		fputcsv($fp, array('TI','FUND','FUNCTION','OBJECT','SCC','SUBJECT','OPU','IL','JOB','Description','Proposed'));
+			$entries = BuildingBudget::where('building_id','=',$user->building_id)->get();
+			$budgetFile = "";
+    		$budgetFile = "TI,FUND,FUNCTION,OBJECT,SCC,SUBJECT,OPU,IL,JOB,Description,Proposed\r\n";
     		foreach($entries as $bb){
 
+    			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
+    			
+    			$budgetFile .= $bb->ti . ",";
+    			$budgetFile .= $bb->fund.",";
+    			$budgetFile .= $bb->function .",";
+    			$budgetFile .= $bb->object.",";
+    			$budgetFile .= $bb->scc.",";
+    			$budgetFile .= $bb->subject.",";
+    			$budgetFile .= $bb->opu.",";
+    			$budgetFile .= $bb->il.",";
+    			$budgetFile .= $bb->job.",";
+    			$budgetFile .= $bb->description.",";
+    			$budgetFile .= $bbp->amount."\r\n";
     		}
 
-    		fclose($fp);
+    		$user = Session::get('user');
+    		$entries = BuildingRevenue::where('building_id','=',$user->building_id)->get();
+
+    		$revFile = "";
+    		$revFile .= "TI,FUND,RECEIPT,SCC,SUBJECT,OPU,Description,Proposed\r\n";
+    		foreach($entries as $br){
+    			$brp = BuildingRevenueProposed::where('buildingrevenue_id','=',$br->id)->first();
+    			$revFile .= $br->ti.",";
+    			$revFile .= $br->fund.",";
+    			$revFile .= $br->receipt.",";
+    			$revFile .= $br->scc.",";
+    			$revFile .= $br->subject.",";
+    			$revFile .= $br->opu.",";
+    			$revFile .= $br->description.",";
+    			$revFile .= $brp->amount."\r\n";
+    		}
+    		$file = tempnam("tmp", "zip");
+    		$zip = new ZipArchive();
+    		$zip->open($file, ZipArchive::OVERWRITE);
+
+    		$zip->addFromString("BUILDINGBUDGET.CSV",$budgetFile);
+    		$zip->addFromString("BUILDINGREVENUE.CSV",$revFile);
+
+    		$zip->close();
+
+			header('Content-Type: application/zip');
+	        header('Content-Length: '.filesize($file));
+	        header('Content-Disposition: attachement; filename="budrev.zip"');
+	        readfile($file);
+	        unlink($file);    		
+
 		} else {
 			return View::make('admin.index2');
 		}

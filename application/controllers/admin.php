@@ -19,7 +19,7 @@ class Admin_Controller  extends Base_Controller {
 		$username = Input::get('uid');
 		$password = Input::get('pwd');
 
-		if($username == 'admin'){
+		if(strcspn($username, '0123456789') == strlen($username)){
 			// DB Auth
 			Config::set('auth.driver', 'eloquent');
 			$password = md5($password . 'nacs');
@@ -30,7 +30,22 @@ class Admin_Controller  extends Base_Controller {
 	        );
 
 	        if( Auth::attempt($credentials)) {
-	        	return Redirect::to('admin/index');
+	        	if(User::where('username','=',$username)->first()){
+					//$user = User::where('username','=',Auth::user()->name)->first();
+					$user = Auth::user();
+					
+					Session::put('user',$user);
+					if($user->is_sa){
+						Session::put('sa',1);
+						return Redirect::to('admin/index');
+					} else {
+						return Redirect::to('admin/building/index');
+					}
+		        	
+		        } else {
+		        	Session::flash('login_error','You do not have access to this app.');
+		        	return View::make('admin.index2');
+		        } 
 	        } else {
 	        	echo "Failed to login";
 	        }
@@ -223,6 +238,29 @@ class Admin_Controller  extends Base_Controller {
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
+		}
+	}
+
+	public function action_budexport()
+	{
+		$entries = BuildingBudget::all();
+		$budgetFile = "";
+		$budgetFile = "TI,FUND,FUNCTION,OBJECT,SCC,SUBJECT,OPU,IL,JOB,Description,Proposed\r\n";
+		foreach($entries as $bb){
+
+			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
+			
+			$budgetFile .= $bb->ti . ",";
+			$budgetFile .= $bb->fund.",";
+			$budgetFile .= $bb->function .",";
+			$budgetFile .= $bb->object.",";
+			$budgetFile .= $bb->scc.",";
+			$budgetFile .= $bb->subject.",";
+			$budgetFile .= $bb->opu.",";
+			$budgetFile .= $bb->il.",";
+			$budgetFile .= $bb->job.",";
+			$budgetFile .= $bb->description.",";
+			$budgetFile .= $bbp->amount."\r\n";
 		}
 	}
 	/* End Budget Section */

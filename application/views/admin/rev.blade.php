@@ -36,5 +36,15 @@
 <br/><input type='text' name='email' id='email' placeholder='john.smith@example.com'></input>
 <br/><input type='submit' name='submit' class="btn" value='Submit' /></form>
 
+<script type="text/javascript">
+	$(function() {
+		 
+	    $("form").bind("keypress", function(e) {
+	            if (e.keyCode == 13) return false;
+	      });
+	 
+	});
+</script>
+
 </div>
 @endsection

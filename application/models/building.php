@@ -5,11 +5,16 @@ class Building extends Eloquent{
 
 	public function buildingBudgets()
 	{
-		return $this->has_many('BuildingBudgets');
+		return $this->has_many('BuildingBudget');
 	}
 
 	public function buildingBudgetAmount()
 	{
 		return $this->belongs_to('BuildingBudgetAmount');
+	}
+
+	public function buildingRevenues()
+	{
+		return $this->has_many('BuildingRevenue');
 	}
 }

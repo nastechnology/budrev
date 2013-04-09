@@ -63,5 +63,10 @@
 			current.innerHTML = testvalue;
 		}
 	}
+	$(function() {	 
+	    $("form").bind("keypress", function(e) {
+	            if (e.keyCode == 13) return false;
+	      });
+	});
 </script>
 @endsection
