@@ -52,24 +52,29 @@ class Home_Controller extends Base_Controller {
 					Session::flash('status_success', 'Your proposed revenue has been submitted');
 					return Redirect::home();
 				} else {
-					$entries = RevenueProposed::all();
-					$arrRevenues = array();
-					foreach($entries as $key=>$rp){
-						$arrRevenues[$rp->revenue_id] = Revenue::find($rp->revenue_id);
-						$string = "";
+					$size = RevenueProposed::where('key','=', $_GET['key'])->count();
+					if($size > 0){
+						$entries = RevenueProposed::all();
+						$arrRevenues = array();
+						foreach($entries as $key=>$rp){
+							$arrRevenues[$rp->revenue_id] = Revenue::find($rp->revenue_id);
+							$string = "";
 
-						$model = $rp->attributes;
-						if($model['key'] == $_GET['key']){
-							$arrProposed[] = $rp;
-							foreach (Revenue::find($rp->revenue_id)->received()->get() as $value) {
-				    			$string .= $value->fyyear . " : $".$value->amount."\n";
-				    		}
+							$model = $rp->attributes;
+							if($model['key'] == $_GET['key']){
+								$arrProposed[] = $rp;
+								foreach (Revenue::find($rp->revenue_id)->received()->get() as $value) {
+					    			$string .= $value->fyyear . " : $".$value->amount."\n";
+					    		}
+							}
+
+							$arrExpended[$rp->revenue_id] = $string;
+				    		$arrProposed[$rp->revenue_id] = $rp->proposed;
 						}
-
-						$arrExpended[$rp->revenue_id] = $string;
-			    		$arrProposed[$rp->revenue_id] = $rp->proposed;
-					}
-			    	return View::make('home.index2', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
+				    	return View::make('home.index2', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
+				    } else {
+				    	return View::make('home.index');
+				    }
 		    	}
 			} else {
 				// Budget
@@ -89,24 +94,30 @@ class Home_Controller extends Base_Controller {
 					Session::flash('status_success', 'Your proposed budget has been submitted');
 					return Redirect::home();
 				} else {
-					$entries = BudgetProposed::all();
-					$arrBudgets = array();
-					foreach ($entries as $key=>$bp) {
-						$arrBudgets[$bp->budget_id] = Budget::find($bp->budget_id);
-						$string = "";
-						$model = $bp->attributes;
-						if($model['key'] == $_GET['key']){
-							$arrProposed[] = $bp;
-							
-							foreach (Budget::find($bp->budget_id)->expended()->get() as $key=>$value) {
-				    			$string .= $value->fyyear . " : $".$value->amount."\n";
-				    		}
-						}
+					$size = BudgetProposed::where('key','=', $_GET['key'])->count();
+					if($size > 0){
+						$entries = BudgetProposed::all();
+						$arrBudgets = array();
+						foreach ($entries as $key=>$bp) {
+							$arrBudgets[$bp->budget_id] = Budget::find($bp->budget_id);
+							$string = "";
+							$model = $bp->attributes;
+							if($model['key'] == $_GET['key']){
+								$arrProposed[] = $bp;
+								
+								foreach (Budget::find($bp->budget_id)->expended()->get() as $key=>$value) {
+					    			$string .= $value->fyyear . " : $".$value->amount."\n";
+					    		}
+							}
 
-						$arrExpended[$bp->budget_id] = $string;
-			    		$arrProposed[$bp->budget_id] = $bp->proposed;		    		
+							$arrExpended[$bp->budget_id] = $string;
+				    		$arrProposed[$bp->budget_id] = $bp->proposed;		    		
+						}
+						return View::make('home.index2', array('budgets'=>$arrBudgets,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
+					} else {
+						return View::make('home.index');
 					}
-					return View::make('home.index2', array('budgets'=>$arrBudgets,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
+
 				}
 			}
 		} else {

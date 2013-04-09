@@ -49,13 +49,7 @@
 	<script type="text/javascript" src="/js/bootstrap-popover.js"></script>
 	<script type="text/javascript">
 	$('.dropdown-toggle').dropdown();   
-	$(function() {
-		 
-	    $("form").bind("keypress", function(e) {
-	            if (e.keyCode == 13) return false;
-	      });
-	 
-	});
+	
 
 	$('a[rel=popover]')
       .popover('toggle')
