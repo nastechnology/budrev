@@ -250,18 +250,20 @@ class Admin_Controller  extends Base_Controller {
 
 			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
 			
-			$budgetFile .= $bb->ti . ",";
-			$budgetFile .= $bb->fund.",";
-			$budgetFile .= $bb->function .",";
-			$budgetFile .= $bb->object.",";
-			$budgetFile .= $bb->scc.",";
-			$budgetFile .= $bb->subject.",";
-			$budgetFile .= $bb->opu.",";
-			$budgetFile .= $bb->il.",";
-			$budgetFile .= $bb->job.",";
-			$budgetFile .= $bb->description.",";
-			$budgetFile .= $bbp->amount."\r\n";
+			$budgetFile .= '"'.$bb->ti . '","';
+			$budgetFile .= $bb->fund.'","';
+			$budgetFile .= $bb->function .'","';
+			$budgetFile .= $bb->object.'","';
+			$budgetFile .= $bb->scc.'","';
+			$budgetFile .= $bb->subject.'","';
+			$budgetFile .= $bb->opu.'","';
+			$budgetFile .= $bb->il.'","';
+			$budgetFile .= $bb->job.'","';
+			$budgetFile .= $bb->description.'","';
+			$budgetFile .= $bbp->amount.'"\r\n';
 		}
+
+		
 	}
 	/* End Budget Section */
 
