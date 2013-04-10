@@ -32,9 +32,19 @@
 |
 */
 
-Route::controller(Controller::detect());
+//Route::controller(Controller::detect());
 
-Route::controller('buds','Admin_Buds_Controller');
+Route::controller('admin');
+Route::controller('buds');
+Route::controller('bud');
+Route::controller('home');
+Route::controller('user');
+Route::controller('rev');
+Route::controller('revs');
+Route::controller('building');
+Route::controller('revenue');
+Route::controller('budget');
+
 
 // Route::get('/', function()
 // {
