@@ -34,18 +34,17 @@
 
 
 
- Route::controller('admin');
+ Route::controller(array('admin','bud','home','rev',));
 // Route::controller('buds','Admin_Buds_Controller');
- Route::controller('bud');
- Route::controller('home');
+
 // Route::controller('user','Admin_User_Controllelr');
- Route::controller('rev');
+
 // Route::controller('revs','Admin_Revs_Controller');
 // Route::controller('building','Admin_Building_Controller');
 // Route::controller('revenue','Admin_Revenue_Controller');
 // Route::controller('budget', 'Admin_Budget_Controller');
 
-Route::get('/admin/buds','buds@index');
+
 
 // Route::get('/', array('as' => 'home', function()
 // {
