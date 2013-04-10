@@ -34,6 +34,8 @@
 
 Route::controller(Controller::detect());
 
+Route::controller('buds');
+
 // Route::get('/', function()
 // {
 // 	return View::make('home.index');
