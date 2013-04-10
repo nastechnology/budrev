@@ -266,13 +266,72 @@ class Admin_Controller  extends Base_Controller {
 		
 	}
 
-	public function action_buds()
+	public function action_buds($param = "")
 	{
 		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 			$rBadge = $this->_getTotal() - $this->_getProposed();
-			$budgets = Budget::all();
-			return View::make('admin.buds', array('budgets'=>$budgets))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+			switch ($param) {
+				case 'add':
+					
+					if(Input::has('submit')){
+						$values = Input::get();
+						
+						$submit = array_pop($values);
+						$budget = new Budget($values);
+
+						$budget->save();
+
+						if($budget->id){
+							Session::flash('status_success',"Successfully added ".$budget->description." budget.");
+						} else {
+							Session::flash('status_error',"Error adding ".$budget->description." budget.");
+						}
+					} 
+					
+					return View::make('admin.budsadd')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));			
+				
+					break;
+				case 'edit':
+					if(Input::has('submit')){
+				
+						$budget = Budget::find(Input::get('id'));
+						$values = Input::get();
+						$submit = array_pop($values);
+
+						foreach ($values as $key => $value) {
+							$budget->$key = $value;
+						}
+
+						if($budget->save()){
+							Session::flash('status_success',"Successfully edited ".$budget->description." budget.");
+						} else {
+							Session::flash('status_error',"Error editting ".$budget->description." budget.");
+						}
+						return View::make('admin.buds', array('budgets'=>Budget::all()))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					} else {
+						$budget = Budget::find($_GET['id']);
+						return View::make('admin.budsedit', array('budget'=>$budget))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					}
+					break;
+
+				case 'delete':
+					$id = $_GET['id'];
+			
+					if(Budget::find($id)->delete()){
+						Session::flash('status_success', "Successfully deleted budget");
+						return View::make('admin.buds', array('budgets'=>Budget::all()))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					} else {
+						Session::flash('status_error',"Error deleting budget.");
+					}
+					break;
+				
+				default:
+					$budgets = Budget::all();
+					return View::make('admin.buds', array('budgets'=>$budgets))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					break;
+			}
+		
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
