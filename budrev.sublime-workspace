@@ -365,15 +365,39 @@
 			"file": "application/controllers/admin.php",
 			"settings":
 			{
-				"buffer_size": 14171,
+				"buffer_size": 14200,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/config/dev/application.php",
+			"file": "application/config/application.php",
 			"settings":
 			{
-				"buffer_size": 491,
+				"buffer_size": 6643,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/models/building.php",
+			"settings":
+			{
+				"buffer_size": 350,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/config/database.php",
+			"settings":
+			{
+				"buffer_size": 3435,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/config/error.php",
+			"settings":
+			{
+				"buffer_size": 2228,
 				"line_ending": "Unix"
 			}
 		}
@@ -410,12 +434,12 @@
 	},
 	"file_history":
 	[
+		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/application.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/prod/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/prod/application.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/application.php",
-		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/application.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/admin.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/home.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/views/admin/buildingbudget.blade.php",
@@ -608,7 +632,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 10,
 			"sheets":
 			[
 				{
@@ -716,7 +740,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 32.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -743,7 +767,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 70.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -780,15 +804,15 @@
 					"file": "application/controllers/admin.php",
 					"settings":
 					{
-						"buffer_size": 14171,
+						"buffer_size": 14200,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								8634,
+								8634
 							]
 						],
 						"settings":
@@ -797,25 +821,106 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2006.0,
+						"translation.y": 3466.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "application/config/dev/application.php",
+					"file": "application/config/application.php",
 					"settings":
 					{
-						"buffer_size": 491,
+						"buffer_size": 6643,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								487,
-								487
+								1729,
+								1729
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 786.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "application/models/building.php",
+					"settings":
+					{
+						"buffer_size": 350,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								348,
+								348
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "application/config/database.php",
+					"settings":
+					{
+						"buffer_size": 3435,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1462,
+								1462
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 458.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "application/config/error.php",
+					"settings":
+					{
+						"buffer_size": 2228,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1089,
+								1089
 							]
 						],
 						"settings":

@@ -80,6 +80,16 @@ return array(
 			'prefix'   => '',
 		),
 
+		'mysql_dev' => array(
+			'driver'   => 'mysql',
+			'host'     => 'localhost',
+			'database' => 'budrevs',
+			'username' => 'root',
+			'password' => '',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+		),
+
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => '127.0.0.1',
