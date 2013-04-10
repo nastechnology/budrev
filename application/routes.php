@@ -34,7 +34,7 @@
 
 Route::controller(Controller::detect());
 
-Route::controller('buds');
+Route::controller('buds','Admin_Buds_Controller');
 
 // Route::get('/', function()
 // {
