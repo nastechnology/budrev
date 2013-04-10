@@ -265,6 +265,19 @@ class Admin_Controller  extends Base_Controller {
 
 		
 	}
+
+	public function action_buds()
+	{
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
+			$budgets = Budget::all();
+			return View::make('admin.buds', array('budgets'=>$budgets))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+		} else {
+			Session::forget('login_error');
+			return View::make('admin.index2');
+		}
+	}
 	/* End Budget Section */
 
 	/*  Revenue Section */
