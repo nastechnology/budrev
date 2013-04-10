@@ -574,5 +574,440 @@ class Admin_Controller  extends Base_Controller {
 
 	/* End Revenue Section */
 
+	/* User Section */
+
+	public function action_user($param = "")
+	{
+		$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+		$rBadge = $this->_getTotal() - $this->_getProposed();
+			
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
+			 switch($param){
+				case 'add':
+					if(Input::has('submit')){
+						// User Form Submitted
+						$user = new User();
+						$user->name = Input::get('name');
+						$user->username = Input::get('uid');
+						$user->email = Input::get('email');
+						$user->building_id = Input::get('building');
+
+						$user->save();
+						if(isset($user->id)){
+							// Saved correctly
+							Session::flash('status_success', 'Successfully added '.$user->name);
+							return Redirect::to('/admin/user/add');
+						} else {
+							// Save Unsuccessful
+							Session::flash('status_error', 'unsuccessfully added '.$user->name);
+							return Redirect::to('/admin/user/add');
+						}
+					} else {
+						// Add User Form
+						$buildings = Building::all();
+						return View::make('admin.useradd', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					}
+
+					break;
+
+				case 'delete':
+					if(isset($_GET['id'])){
+						$user = User::find($_GET['id']);
+						$name = $user->name;
+						$user->delete();
+						Session::flash('status_success', 'Successfully removed user '.$name);
+						return View::make('admin.userindex');
+					} else {
+						Session::flash('status_error', 'There was a problem removing the user');
+						return View::make('admin.index2');
+					}
+					break;
+
+				default:
+					$users = User::where('building_id','!=','0')->get();
+					if(sizeof($users) > 0){
+						$buildings = Building::all();
+						$arrBuildings =  array();
+						foreach ($buildings as $value) {
+							$arrBuildings[$value->id] = $value->building;
+						}
+						return View::make('admin.userindex', array('users'=> $users,'buildings'=>$arrBuildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					} else {
+						return View::make('admin.userindex2')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					}
+					break;
+			}
+		} else {
+			Session::forget('login_error');
+			return View::make('admin.index2');
+		}
+
+	}
+
+	/* End User Section */
+
+	/* Building Section */
+
+	public function action_building($param = "")
+	{
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
+			$user = Session::get('user');
+			switch ($param) {
+				case 'budget':
+					if(Input::has('submit')){
+						// Submitted Budget
+						$values = Input::get();
+						$submit = array_pop($values);
+
+						$fy = "FY".(date('y')+1);
+						foreach ($values as $name=>$value) {
+							list($p,$buildingbudget_id) = explode("-",$name);
+							$bbp = new BuildingBudgetProposed;
+							$bb = BuildingBudget::find($buildingbudget_id);
+							$bb->is_proposed = '1';
+
+							$bbp->buildingbudget_id = $buildingbudget_id;
+							$bbp->fyyear = $fy;
+							if($value == null || $value == ""){
+								$bbp->amount = '0.00';
+							} else {
+								$bbp->amount = $value;
+							}
+
+							$bb->save();
+							$bbp->save();
+						}
+						Session::flash('status_success', 'Your proposed building budget has been submitted');
+						return Redirect::to('/admin/building');
+					} else {
+						$user = Session::get('user');
+						if(isset($_GET['building'])){
+							$entries = BuildingBudget::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->get();
+						} else {
+							$entries = BuildingBudget::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
+						}
+						if(sizeof($entries)>0){
+							$arrBudgets = array();
+					    	$arrExpended = array();
+					    	$arrProposed = array();
+
+					    	$fy = date('y') + 1;
+					    	
+					    	$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
+
+					    	foreach($entries as $key=>$obj){
+					    		$arrBudgets[] = $obj;
+					    		$string = "";
+					    		
+					    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->get() as $value) {
+					    			$string .= $value->fyyear . " : $".$value->amount."\n";
+					    		}
+					    		
+					    		$arrExpended[$obj->id] = $string;
+					    	}
+					    	
+					    	return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended,'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
+				    	} else {
+				    		return View::make('admin.buildingbudget2')->nest('nav','partials.nav2');
+				    	}
+				    }
+					break;
+				
+				case 'revenue':
+					if(Input::has('submit')){
+						// Submitted Revenues
+						$values = Input::get();
+						$submit = array_pop($values);
+
+						$fy = "FY".(date('y')+1);
+						foreach ($values as $name=>$value) {
+							list($p,$buildingrevenue_id) = explode("-",$name);
+							$brp = new BuildingRevenueProposed;
+							$br = BuildingRevenue::find($buildingrevenue_id);
+							$br->is_proposed = '1';
+
+							$brp->buildingrevenue_id = $buildingrevenue_id;
+							$brp->fyyear = $fy;
+							if($value == null || $value == ""){
+								$brp->amount = '0.00';
+							} else {
+								$brp->amount = $value;
+							}
+
+							$br->save();
+							$brp->save();
+						}
+						Session::flash('status_success', 'Your proposed building Revenues has been submitted');
+						return Redirect::to('/admin/building');
+					} else {
+						$user = Session::get('user');
+						if(isset($_GET['building'])){
+							$entries = BuildingRevenue::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->get();
+						} else {
+							$entries = BuildingRevenue::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
+						}
+					
+						if(sizeof($entries)>0){
+							$arrRevs = array();
+					    	$arrExpended = array();
+					    	$arrProposed = array();
+							foreach($entries as $key=>$obj){
+					    		$arrRevs[] = $obj;
+					    		$string = "";
+					    		
+					    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
+
+					    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
+					    			$string .= $value->fyyear . " : $".$value->amount."\n";
+					    			Log::write("info", $obj->id.":::".$string);
+					    		}
+
+					    		
+					    		$arrExpended[$obj->id] = $string;
+					    	}
+							return View::make('admin.buildingrevenue', array('revenues'=>$arrRevs,'expended'=>$arrExpended))->nest('nav','partials.nav2');
+						} else {
+							return View::make('admin.buildingrevenue2')->nest('nav','partials.nav2');
+						}
+					}
+					break;
+
+				case 'export':
+
+					$entries = BuildingBudget::where('building_id','=',$user->building_id)->get();
+					$budgetFile = "";
+		    		$budgetFile = "TI,FUND,FUNCTION,OBJECT,SCC,SUBJECT,OPU,IL,JOB,Description,Proposed\r\n";
+		    		foreach($entries as $bb){
+
+		    			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
+		    			
+		    			$budgetFile .= $bb->ti . ",";
+		    			$budgetFile .= $bb->fund.",";
+		    			$budgetFile .= $bb->function .",";
+		    			$budgetFile .= $bb->object.",";
+		    			$budgetFile .= $bb->scc.",";
+		    			$budgetFile .= $bb->subject.",";
+		    			$budgetFile .= $bb->opu.",";
+		    			$budgetFile .= $bb->il.",";
+		    			$budgetFile .= $bb->job.",";
+		    			$budgetFile .= $bb->description.",";
+		    			$budgetFile .= $bbp->amount."\r\n";
+		    		}
+
+		    		$user = Session::get('user');
+		    		$entries = BuildingRevenue::where('building_id','=',$user->building_id)->get();
+
+		    		$revFile = "";
+		    		$revFile .= "TI,FUND,RECEIPT,SCC,SUBJECT,OPU,Description,Proposed\r\n";
+		    		foreach($entries as $br){
+		    			$brp = BuildingRevenueProposed::where('buildingrevenue_id','=',$br->id)->first();
+		    			$revFile .= $br->ti.",";
+		    			$revFile .= $br->fund.",";
+		    			$revFile .= $br->receipt.",";
+		    			$revFile .= $br->scc.",";
+		    			$revFile .= $br->subject.",";
+		    			$revFile .= $br->opu.",";
+		    			$revFile .= $br->description.",";
+		    			$revFile .= $brp->amount."\r\n";
+		    		}
+		    		$file = tempnam("tmp", "zip");
+		    		$zip = new ZipArchive();
+		    		$zip->open($file, ZipArchive::OVERWRITE);
+
+		    		$zip->addFromString("BUILDINGBUDGET.CSV",$budgetFile);
+		    		$zip->addFromString("BUILDINGREVENUE.CSV",$revFile);
+
+		    		$zip->close();
+
+					header('Content-Type: application/zip');
+			        header('Content-Length: '.filesize($file));
+			        header('Content-Disposition: attachement; filename="budrev.zip"');
+			        readfile($file);
+			        unlink($file);    	
+					break;
+
+				default:
+					return View::make('admin.dashboard')->nest('nav','partials.nav2');
+					break;
+			}
+		} else {
+			return View::make('admin.index2');
+		}
+	}
+
+	/* End BUilding Section */
+
+	/* Building Budget Section */
+
+
+	public function action_budget($param = "")
+	{
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
+			switch ($param) {
+				case 'view':
+					$buildings = Building::all();
+					return View::make('admin.budgetview', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					break;
+
+				case 'edit':
+					$buildings = Building::all();
+					if(Input::has('submit')){
+						$values = Input::get();
+						$submit = array_pop($values);
+						foreach ($values as $name=>$value) {
+							list($p,$buildingbudget_id) = explode("-",$name);
+							$bbuildingproposed = BuildingBudgetProposed::find($buildingbudget_id);
+							$bbuildingproposed->amount = $value;
+							$bbuildingproposed->save();
+						}
+
+						Session::flash('status_success','Successfully updated all the building budgets');
+						return View::make('admin.budgetedit', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					} else {
+						return View::make('admin.budgetedit', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					}
+					break;
+
+				case 'json':
+					$buildingBudget = BuildingBudget::where('building_id','=',$_GET['id'])->get();
+					// echo json_encode($buildingBudget);
+					$arrJson = array();
+					foreach ($buildingBudget as $key => $value) {
+							
+						// $arrJson[$key] = ($value->attributes);
+						$fy = 'FY'.(date('y')+1);
+						$bbuildingproposed = BuildingBudgetProposed::where('buildingbudget_id','=',$value->id)->where('fyyear','=',$fy)->first();
+						
+						echo "<tr>";
+						echo "<td>".$value->ti."</td>";
+						echo "<td>".$value->fund."</td>";
+						echo "<td>".$value->function."</td>";
+						echo "<td>".$value->object."</td>";
+						echo "<td>".$value->scc."</td>";
+						echo "<td>".$value->subject."</td>";
+						echo "<td>".$value->opu."</td>";
+						echo "<td>".$value->il."</td>";
+						echo "<td>".$value->job."</td>";
+						echo "<td>".$value->description."</td>";
+						if($bbuildingproposed == null){
+							if(isset($_GET['a'])){
+								echo "<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-".$value->id."' value='0.00'></input></div></td>";
+							} else {
+								echo "<td>$0.00</td>";
+							}
+						} else {
+							if(isset($_GET['a'])){
+								echo "<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-".$value->id."' value='".$bbuildingproposed->amount."'></input></div></td>";
+							} else {
+								echo "<td>$".$bbuildingproposed->amount."</td>";
+							}
+						}
+						echo "</tr>";
+					}
+					break;
+				
+				default:
+					$arrBuildings = Building::all();
+					if(Input::has('submit')){
+						$BuildingBudAmount = new BuildingBudgetAmount();
+						$BuildingBudAmount->building_id = Input::get('building');
+						$BuildingBudAmount->amount = Input::get('amount');
+						$BuildingBudAmount->fyyear = Input::get('fyyear');
+
+						$BuildingBudAmount->save();
+						if($BuildingBudAmount->id){
+							Session::flash('status_success', 'Successfully saved the building budget total for '.$BuildingBudAmount->fyyear);
+						} else {
+							Session::flash('status_error', 'There was an error saving the building budget total');
+						}
+						return View::make('admin.budget', array('buildings'=>$arrBuildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					} else {
+						return View::make('admin.budget', array('buildings'=>$arrBuildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					}
+					break;
+			}
+		} else {
+			Session::flash('login_error','You do not have access to this app.');
+		    return View::make('admin.index2');
+		}
+	} 
+	/* End Building Budget Section */
+
+	/* Building Revenue Section */
+
+	public function action_revenue($param = "")
+	{
+		if(Session::has('sa') && Session::has('user') || Auth::user()){
+			$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
+			$rBadge = $this->_getTotal() - $this->_getProposed();
+			switch ($param) {
+				case 'edit':
+					$buildings = Building::all();
+					if(Input::has('submit')){
+						$values = Input::get();
+						$submit = array_pop($values);
+						foreach ($values as $name=>$value) {
+							list($p,$buildingrevenue_id) = explode("-",$name);
+							$rbuildingproposed = BuildingRevenueProposed::find($buildingrevenue_id);
+							$rbuildingproposed->amount = $value;
+							$rbuildingproposed->save();
+						}
+
+						Session::flash('status_success','Successfully updated all the building revenues');
+					} 
+
+					return View::make('admin.revenueedit', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					break;
+				
+				case 'json':
+					$buildingBudget = BuildingRevenue::where('building_id','=',$_GET['id'])->get();
+
+					//echo json_encode($buildingBudget);
+					$arrJson = array();
+					foreach ($buildingBudget as $key => $value) {
+							
+						// $arrJson[$key] = ($value->attributes);
+						$fy = 'FY'.(date('y')+1);
+						$rbuildingproposed = BuildingRevenueProposed::where('buildingrevenue_id','=',$value->id)->where('fyyear','=',$fy)->first();
+						
+						echo "<tr>";
+						echo "<td>".$value->ti."</td>";
+						echo "<td>".$value->fund."</td>";
+						echo "<td>".$value->receipt."</td>";
+						echo "<td>".$value->scc."</td>";
+						echo "<td>".$value->subject."</td>";
+						echo "<td>".$value->opu."</td>";
+						echo "<td>".$value->description."</td>";
+						if($rbuildingproposed == null){
+							if(isset($_GET['a'])){
+								echo "<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-".$value->id."' value='0.00'></input></div></td>";
+							} else {
+								echo "<td>$0.00</td>";
+							}
+						} else {
+							if(isset($_GET['a'])){
+								echo "<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-".$value->id."' value='".$rbuildingproposed->amount."'></input></div></td>";
+							} else {
+								echo "<td>$".$rbuildingproposed->amount."</td>";
+							}
+						}
+						echo "</tr>";
+					}
+					break;
+
+				default:
+					$buildings = Building::all();
+			return View::make('admin.revenueview', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+					break;
+			}
+		} else {
+			Session::flash('login_error','You do not have access to this app.');
+		    return View::make('admin.index2');
+		}
+	}
+
+	/* End Building Revenue Section */
 	
 }
