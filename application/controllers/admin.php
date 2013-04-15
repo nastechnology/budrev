@@ -19,7 +19,7 @@ class Admin_Controller  extends Base_Controller {
 		$username = Input::get('uid');
 		$password = Input::get('pwd');
 
-		if(strcspn($username, '0123456789') == strlen($username)){
+		if(strcspn($username, '0123456789') != 0){
 			// DB Auth
 			Config::set('auth.driver', 'eloquent');
 			$password = md5($password . 'nacs');
@@ -66,7 +66,7 @@ class Admin_Controller  extends Base_Controller {
 						Session::put('sa',1);
 						return Redirect::to('admin/index');
 					} else {
-						return Redirect::to('admin/building/index');
+						return Redirect::to('building/index');
 					}
 		        	
 		        } else {
@@ -650,6 +650,8 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_building($param = "")
 	{
+		var_dump(Session::has('user'));
+
 		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			$user = Session::get('user');
 			switch ($param) {
@@ -831,6 +833,7 @@ class Admin_Controller  extends Base_Controller {
 					break;
 			}
 		} else {
+
 			return View::make('admin.index2');
 		}
 	}
