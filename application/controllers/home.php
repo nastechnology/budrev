@@ -39,7 +39,7 @@ class Home_Controller extends Base_Controller {
 			if(isset($_GET['p'])){
 				// Revenue
 				echo "Made it ehre";
-			
+
 				if(Input::has('submit')){
 					// Form Submitted
 					$values = Input::get();
@@ -55,6 +55,7 @@ class Home_Controller extends Base_Controller {
 					return Redirect::home();
 				} else {
 					$size = RevenueProposed::where('key','=', $_GET['key'])->count();
+					var_dump($size);
 					if($size > 0){
 						$entries = RevenueProposed::all();
 						$arrRevenues = array();
