@@ -38,6 +38,8 @@ class Home_Controller extends Base_Controller {
 	    	$arrProposed = array();
 			if(isset($_GET['p'])){
 				// Revenue
+				echo "Made it ehre";
+				exit();
 				if(Input::has('submit')){
 					// Form Submitted
 					$values = Input::get();
