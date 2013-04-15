@@ -39,7 +39,7 @@ class Building_Controller extends Base_Controller {
 					$bbp->save();
 				}
 				Session::flash('status_success', 'Your proposed building budget has been submitted');
-				return Redirect::to('/admin/building');
+				return Redirect::to('/building');
 			} else {
 				$user = Session::get('user');
 				if(isset($_GET['building'])){
@@ -104,7 +104,7 @@ class Building_Controller extends Base_Controller {
 					$brp->save();
 				}
 				Session::flash('status_success', 'Your proposed building Revenues has been submitted');
-				return Redirect::to('/admin/building');
+				return Redirect::to('/building');
 			} else {
 				$user = Session::get('user');
 				if(isset($_GET['building'])){
