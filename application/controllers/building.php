@@ -147,39 +147,39 @@ class Building_Controller extends Base_Controller {
 			$user = Session::get('user');
 			$entries = BuildingBudget::where('building_id','=',$user->building_id)->get();
 			$budgetFile = "";
-    		$budgetFile = "TI,FUND,FUNCTION,OBJECT,SCC,SUBJECT,OPU,IL,JOB,Description,Proposed\r\n";
+    		$budgetFile = '"TI","FUND","FUNCTION","OBJECT","SCC","SUBJECT","OPU","IL","JOB","Description","Proposed"'."\r\n";
     		foreach($entries as $bb){
 
     			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
     			
-    			$budgetFile .= $bb->ti . ",";
-    			$budgetFile .= $bb->fund.",";
-    			$budgetFile .= $bb->function .",";
-    			$budgetFile .= $bb->object.",";
-    			$budgetFile .= $bb->scc.",";
-    			$budgetFile .= $bb->subject.",";
-    			$budgetFile .= $bb->opu.",";
-    			$budgetFile .= $bb->il.",";
-    			$budgetFile .= $bb->job.",";
-    			$budgetFile .= $bb->description.",";
-    			$budgetFile .= $bbp->amount."\r\n";
+    			$budgetFile .= '"'.$bb->ti . '","';
+    			$budgetFile .= $bb->fund.'","';
+    			$budgetFile .= $bb->function .'","';
+    			$budgetFile .= $bb->object.'","';
+    			$budgetFile .= $bb->scc.'","';
+    			$budgetFile .= $bb->subject.'","';
+    			$budgetFile .= $bb->opu.'","';
+    			$budgetFile .= $bb->il.'","';
+    			$budgetFile .= $bb->job.'","';
+    			$budgetFile .= $bb->description.'","';
+    			$budgetFile .= $bbp->amount.'"'."\r\n";
     		}
 
     		$user = Session::get('user');
     		$entries = BuildingRevenue::where('building_id','=',$user->building_id)->get();
 
     		$revFile = "";
-    		$revFile .= "TI,FUND,RECEIPT,SCC,SUBJECT,OPU,Description,Proposed\r\n";
+    		$revFile .= '"TI","FUND","RECEIPT","SCC","SUBJECT","OPU","Description","Proposed"'."\r\n";
     		foreach($entries as $br){
     			$brp = BuildingRevenueProposed::where('buildingrevenue_id','=',$br->id)->first();
-    			$revFile .= $br->ti.",";
-    			$revFile .= $br->fund.",";
-    			$revFile .= $br->receipt.",";
-    			$revFile .= $br->scc.",";
-    			$revFile .= $br->subject.",";
-    			$revFile .= $br->opu.",";
-    			$revFile .= $br->description.",";
-    			$revFile .= $brp->amount."\r\n";
+    			$revFile .= '"'.$br->ti.'","';
+    			$revFile .= $br->fund.'","';
+    			$revFile .= $br->receipt.'","';
+    			$revFile .= $br->scc.'","';
+    			$revFile .= $br->subject.'","';
+    			$revFile .= $br->opu.'","';
+    			$revFile .= $br->description.'","';
+    			$revFile .= $brp->amount.'"'."\r\n";
     		}
     		$file = tempnam("tmp", "zip");
     		$zip = new ZipArchive();
