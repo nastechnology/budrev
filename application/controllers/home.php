@@ -38,8 +38,6 @@ class Home_Controller extends Base_Controller {
 	    	$arrProposed = array();
 			if(isset($_GET['p'])){
 				// Revenue
-				echo "Made it ehre";
-
 				if(Input::has('submit')){
 					// Form Submitted
 					$values = Input::get();
@@ -55,7 +53,6 @@ class Home_Controller extends Base_Controller {
 					return Redirect::home();
 				} else {
 					$size = RevenueProposed::where('key','=', $_GET['key'])->count();
-					var_dump($size);
 					if($size > 0){
 						$entries = RevenueProposed::where('key','=', $_GET['key'])->get();
 						$arrRevenues = array();
@@ -99,7 +96,7 @@ class Home_Controller extends Base_Controller {
 				} else {
 					$size = BudgetProposed::where('key','=', $_GET['key'])->count();
 					if($size > 0){
-						$entries = BudgetProposed::all();
+						$entries = BudgetProposed::where('key','=', $_GET['key'])->get();
 						$arrBudgets = array();
 						foreach ($entries as $key=>$bp) {
 							$arrBudgets[$bp->budget_id] = Budget::find($bp->budget_id);

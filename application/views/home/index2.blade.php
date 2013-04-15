@@ -28,7 +28,7 @@
 						<td>{{ $revenue->subject }}</td>
 						<td>{{ $revenue->opu }}</td>
 						<td>{{ $revenue->description }}</td>
-						<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $revenue->id }}' value='{{ $entries[$revenue->id] }}'></input></div></td>
+						<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $revenue->id }}' value='{{ $entries[$revenue->id] }}'></div></td>
 						<td>
 						<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$revenue->id] }}">Previous Years</a>
 						</td>
@@ -70,7 +70,7 @@
 						<td>{{ $budget->il }}</td>
 						<td>{{ $budget->job }}</td>
 						<td>{{ $budget->description }}</td>
-						<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' value='{{ $entries[$budget->id] }}'></input></div></td>
+						<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' value='{{ $entries[$budget->id] }}'></div></td>
 						<td>
 						<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 						</td>
