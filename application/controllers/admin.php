@@ -109,7 +109,7 @@ class Admin_Controller  extends Base_Controller {
 
     			$body = "\n\n***This site can only be used while on the school district's network.***\n\n";
     			$body.= "Please go to the following URL to setup your proposed revenues for next school year. Please open the link using Firefox or Chrome, copy and paste the link into the url bar.\n";
-    			$body.= "http://budrev2.dev/?key=".$key."\n\n";
+    			$body.= "http://budrev/?key=".$key."\n\n";
     			$body.= "Thank You,\nSara Buchhop";
 
     			if(mail($email,'[Budget]',$body,'From: sara.buchhop@napoleonareaschools.org')){
@@ -363,7 +363,7 @@ class Admin_Controller  extends Base_Controller {
 
     			$body = "\n\n***This site can only be used while on the school district's network.***\n\n";
     			$body.= "Please go to the following URL to setup your proposed revenues for next school year. Please open the link using Firefox or Chrome, copy and paste the link into the url bar.\n";
-    			$body.= "http://budrev2.dev/?key=".$key."&p=rev\n\n";
+    			$body.= "http://budrev/?key=".$key."&p=rev\n\n";
     			$body.= "Thank You,\nSara Buchhop";
 
     			if(mail($email,'[Revenue]',$body,'From: sara.buchhop@napoleonareaschools.org')){
