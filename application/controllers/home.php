@@ -57,7 +57,7 @@ class Home_Controller extends Base_Controller {
 					$size = RevenueProposed::where('key','=', $_GET['key'])->count();
 					var_dump($size);
 					if($size > 0){
-						$entries = RevenueProposed::all();
+						$entries = RevenueProposed::where('key','=', $_GET['key'])->get();
 						$arrRevenues = array();
 						foreach($entries as $key=>$rp){
 							$arrRevenues[$rp->revenue_id] = Revenue::find($rp->revenue_id);
@@ -69,11 +69,10 @@ class Home_Controller extends Base_Controller {
 								foreach (Revenue::find($rp->revenue_id)->received()->get() as $value) {
 					    			$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		}
-					    		$arrExpended[$rp->revenue_id] = $string;
-				    			$arrProposed[$rp->revenue_id] = $rp->proposed;
 							}
 
-							
+							$arrExpended[$rp->revenue_id] = $string;
+				    		$arrProposed[$rp->revenue_id] = $rp->proposed;
 						}
 				    	return View::make('home.index2', array('revenues'=>$arrRevenues,'entries'=>$arrProposed,'expended'=>$arrExpended))->with('key',$_GET['key']);
 				    } else {
