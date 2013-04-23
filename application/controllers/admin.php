@@ -39,7 +39,7 @@ class Admin_Controller  extends Base_Controller {
 						Session::put('sa',1);
 						return Redirect::to('admin/index');
 					} else {
-						return Redirect::to('admin/building/index');
+						return Redirect::to('building/index');
 					}
 		        	
 		        } else {
@@ -245,7 +245,7 @@ class Admin_Controller  extends Base_Controller {
 	{
 		$entries = BuildingBudget::all();
 		$budgetFile = "";
-		$budgetFile = "TI,FUND,FUNCTION,OBJECT,SCC,SUBJECT,OPU,IL,JOB,Description,Proposed\r\n";
+		$budgetFile = '"TI","FUND","FUNCTION","OBJECT","SCC","SUBJECT","OPU","IL","JOB","Description","Proposed"'."\r\n";
 		foreach($entries as $bb){
 
 			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
@@ -260,7 +260,7 @@ class Admin_Controller  extends Base_Controller {
 			$budgetFile .= $bb->il.'","';
 			$budgetFile .= $bb->job.'","';
 			$budgetFile .= $bb->description.'","';
-			$budgetFile .= $bbp->amount.'"\r\n';
+			$budgetFile .= $bbp->amount.'"'."\r\n";
 		}
 
 		
@@ -650,9 +650,9 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_building($param = "")
 	{
-		var_dump(Session::has('user'));
+		// var_dump(Session::has('user'));
 
-		if(Session::has('sa') && Session::has('user') || Auth::user()){
+		if( Session::has('user') || Auth::user() || Session::has('sa')){
 			$user = Session::get('user');
 			switch ($param) {
 				case 'budget':
@@ -833,7 +833,6 @@ class Admin_Controller  extends Base_Controller {
 					break;
 			}
 		} else {
-
 			return View::make('admin.index2');
 		}
 	}

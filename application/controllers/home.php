@@ -126,4 +126,11 @@ class Home_Controller extends Base_Controller {
 		
 	}
 
+
+	// public function action_create()
+	// {
+	// 	$password = md5('amazonnacs');
+	// 	echo "Password for Bookstore User: (amazon) " . Hash::make($password);
+	// }
+
 }
