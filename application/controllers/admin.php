@@ -650,9 +650,9 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_building($param = "")
 	{
-		// var_dump(Session::has('user'));
+		 var_dump(Session::has('user'));
 
-		if( Session::has('user') || Auth::user() || Session::has('sa')){
+		if( Session::has('user') || Auth::user()){
 			$user = Session::get('user');
 			switch ($param) {
 				case 'budget':
@@ -833,6 +833,7 @@ class Admin_Controller  extends Base_Controller {
 					break;
 			}
 		} else {
+			Session::flash('status_success', 'Output does not work..');
 			return View::make('admin.index2');
 		}
 	}
