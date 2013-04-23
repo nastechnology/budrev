@@ -650,9 +650,7 @@ class Admin_Controller  extends Base_Controller {
 
 	public function action_building($param = "")
 	{
-		 var_dump(Session::has('user'));
-
-		if( Session::has('user') || Auth::user()){
+		if( Session::has('user') || Auth::user() || Session::has('sa')){
 			$user = Session::get('user');
 			switch ($param) {
 				case 'budget':
