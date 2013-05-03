@@ -4,7 +4,7 @@
 <div class="content">
 @include('plugins.status')
 <div class="page-header"><h1>Revenues <small>Edit Proposed Revenues</small></h1></div>
-<form name='budreport' method='post' action='/admin/bud'>
+<form name='budreport' method='post' action='/admin/revedit'>
 <table class='table-striped table'>
 	<thead>
 		<tr>
