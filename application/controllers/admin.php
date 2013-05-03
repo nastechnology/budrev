@@ -392,15 +392,15 @@ class Admin_Controller  extends Base_Controller {
 			if(Input::has('submit')){
 				// Save Revenue Proposed
 				$values = Input::get();
+				$submit = array_pop($values);
+				
 				foreach($values as $name=>$value){
-					if($name != 'submit'){
-						list($p,$revenue_id) = explode("-",$name);
-						$rev = Revenue::find($revenue_id)->proposed()->first();
-						$rev->proposed = $value;
-						$rev->save();
-					}
+					list($p,$revenue_id) = explode("-",$name);
+					$rev = Revenue::find($revenue_id)->proposed()->first();
+					$rev->proposed = $value;
+					$rev->save();
 				}
-				Session::flash('status_success', 'Successfully updated Unproposed Revenues');
+				Session::flash('status_success', 'Successfully updated Proposed Revenues');
 				return Redirect::to('admin/rev');
 			} else {
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
