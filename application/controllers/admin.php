@@ -401,7 +401,7 @@ class Admin_Controller  extends Base_Controller {
 					$rev->save();
 				}
 				Session::flash('status_success', 'Successfully updated Proposed Revenues');
-				return Redirect::to('admin/rev');
+				return Redirect::to('admin/revedit');
 			} else {
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 				$rBadge = $this->_getTotal() - $this->_getProposed();
