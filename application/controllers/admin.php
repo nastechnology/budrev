@@ -857,10 +857,18 @@ class Admin_Controller  extends Base_Controller {
 					if(Input::has('submit')){
 						$values = Input::get();
 						$submit = array_pop($values);
+
+						// var_dump($values);
+
 						foreach ($values as $name=>$value) {
 							list($p,$buildingbudget_id) = explode("-",$name);
-							$bbuildingproposed = BuildingBudgetProposed::find($buildingbudget_id);
+							// echo "BuildingBudgetID :: " . $buildingbudget_id . "<br/>Before Setting Amount";
+							$bbuildingproposed = BuildingBudgetProposed::where('buildingbudget_id','=',$buildingbudget_id)->first();
+							// var_dump($bbuildingproposed);
+
+							// echo "After Setting Amount";
 							$bbuildingproposed->amount = $value;
+							// var_dump($bbuildingproposed);
 							$bbuildingproposed->save();
 						}
 
@@ -875,6 +883,8 @@ class Admin_Controller  extends Base_Controller {
 					$buildingBudget = BuildingBudget::where('building_id','=',$_GET['id'])->get();
 					// echo json_encode($buildingBudget);
 					$arrJson = array();
+
+
 					foreach ($buildingBudget as $key => $value) {
 							
 						// $arrJson[$key] = ($value->attributes);
@@ -907,6 +917,7 @@ class Admin_Controller  extends Base_Controller {
 						}
 						echo "</tr>";
 					}
+
 					break;
 				
 				default:

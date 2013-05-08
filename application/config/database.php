@@ -80,6 +80,16 @@ return array(
 			'prefix'   => '',
 		),
 
+		'mysql_stage' => array(
+			'driver'   => 'mysql',
+			'host'     => '10.20.15.56',
+			'database' => 'budrevs-stage',
+			'username' => 'stageuser',
+			'password' => 'ttwu*data',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+		),
+
 		'mysql_dev' => array(
 			'driver'   => 'mysql',
 			'host'     => 'localhost',

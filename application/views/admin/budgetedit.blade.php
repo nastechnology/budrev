@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="content">
+
+	@include('plugins.status')
 	<h1 class="page-header">Building Budgets <small>View Submitted Budgets by Building</small></h1>
 	<label for="building">Building</label>
 	<select name="building" id="building" onchange="getData(this.value)">
@@ -10,7 +12,8 @@
 			<option value="{{ $building->id }}">{{ $building->building }}</option>
 		@endforeach
 	</select>
-	<form action="/admin/budget/edit" class="form-horizontal">
+
+	<form action="/admin/budget/edit" method="POST" class="form-horizontal">
 	<table class="table table-striped">
 		<thead>
 			<tr>
