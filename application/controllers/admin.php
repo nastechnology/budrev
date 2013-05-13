@@ -146,16 +146,18 @@ class Admin_Controller  extends Base_Controller {
 			if(Input::has('submit')){
 				// Save Budget Proposed
 				$values = Input::get();
+				$submit = array_pop($values);
 				foreach($values as $name=>$value){
-					if($name != 'submit'){
-						list($p,$budget_id) = explode("-",$name);
-						$bud = Budget::find($budget_id)->proposed()->first();
-						$bud->proposed = $value;
-						$bud->save();
-					}
+					list($p,$budget_id) = explode("-",$name);
+
+					$bud = BudgetProposed::where('budget_id','=',$budget_id)->first();
+					
+					$bud->proposed = $value;
+					$bud->save();
 				}
+
 				Session::flash('status_success', 'Successfully updated Unproposed Budgets');
-				return Redirect::to('admin/bud');
+				return Redirect::to('admin/budedit');
 			} else {
 				$entries = BudgetProposed::all();
 
