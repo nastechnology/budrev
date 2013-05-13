@@ -14,6 +14,13 @@ class Admin_Controller  extends Base_Controller {
 		}
 	}
 
+/*
+	public function action_password()
+	{
+		$new = md5('nhsbookstore'.'nacs');
+		echo Hash::make($new);
+	}
+*/
 	public function action_login()
 	{
 		$username = Input::get('uid');
