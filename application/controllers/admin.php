@@ -405,7 +405,7 @@ class Admin_Controller  extends Base_Controller {
 				
 				foreach($values as $name=>$value){
 					list($p,$revenue_id) = explode("-",$name);
-					$rev = Revenue::find($revenue_id)->proposed()->first();
+					$rev = RevenueProposed::where('revenue_id','=',$revenue_id)->first();
 					$rev->proposed = $value;
 					$rev->save();
 				}
