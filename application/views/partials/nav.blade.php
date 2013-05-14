@@ -50,6 +50,7 @@
 			<li><a href="/admin/revexport">Revenues</a></li>
 		</ul>
 	</li>
+	<li><a href="/bug">Submit Bug</a></li>
 	<li><a href="/admin/logout">Logout</a></li>
 </ul></div>
 @endsection

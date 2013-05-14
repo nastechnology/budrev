@@ -1,2 +1,3 @@
 storage/logs/*
 storage/view/*
+application/controllers/bug.php

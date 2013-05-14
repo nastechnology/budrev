@@ -34,7 +34,7 @@
 
 
 
- Route::controller(array('admin','bud','home','rev','building'));
+ Route::controller(array('admin','bud','home','rev','building','bug'));
  //Route::get('admin/building/(:any)', 'Building_Controller');
  //Route::get('admin', 'Admin_Controller');
 // Route::controller('buds','Admin_Buds_Controller');
