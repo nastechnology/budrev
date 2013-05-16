@@ -255,10 +255,13 @@ class Admin_Controller  extends Base_Controller {
 		$entries = BuildingBudget::all();
 		$budgetFile = "";
 		$budgetFile = '"TI","FUND","FUNCTION","OBJECT","SCC","SUBJECT","OPU","IL","JOB","Description","Proposed"'."\r\n";
+		
+		
 		foreach($entries as $bb){
 
 			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
 			
+			// if()
 			$budgetFile .= '"'.$bb->ti . '","';
 			$budgetFile .= $bb->fund.'","';
 			$budgetFile .= $bb->function .'","';
@@ -271,6 +274,43 @@ class Admin_Controller  extends Base_Controller {
 			$budgetFile .= $bb->description.'","';
 			$budgetFile .= $bbp->amount.'"'."\r\n";
 		}
+
+		$entries2 = Budget::all();
+		$actBudgetFile = '"TI","FUND","FUNCTION","OBJECT","SCC","SUBJECT","OPU","IL","JOB","Description","Proposed"'."\r\n";
+
+		foreach($entries2 as $b){
+
+			$bp = BudgetProposed::where('budget_id','=',$b->id)->first();
+			
+			// if()
+			$actBudgetFile .= '"'.$b->ti . '","';
+			$actBudgetFile .= $b->fund.'","';
+			$actBudgetFile .= $b->function .'","';
+			$actBudgetFile .= $b->object.'","';
+			$actBudgetFile .= $b->scc.'","';
+			$actBudgetFile .= $b->subject.'","';
+			$actBudgetFile .= $b->opu.'","';
+			$actBudgetFile .= $b->il.'","';
+			$actBudgetFile .= $b->job.'","';
+			$actBudgetFile .= $b->description.'","';
+			$actBudgetFile .= $bp->proposed.'"'."\r\n";
+			
+		}
+
+		$file = tempnam("tmp", "zip");
+		$zip = new ZipArchive();
+		$zip->open($file, ZipArchive::OVERWRITE);
+
+		$zip->addFromString("BUILDINGBUDGET.CSV",$budgetFile);
+		$zip->addFromString("ActivityBUDGET.CSV",$actBudgetFile);
+
+		$zip->close();
+
+		header('Content-Type: application/zip');
+        header('Content-Length: '.filesize($file));
+        header('Content-Disposition: attachement; filename="budget.zip"');
+        readfile($file);
+        unlink($file);  
 
 		
 	}
@@ -438,6 +478,64 @@ class Admin_Controller  extends Base_Controller {
 			Session::forget('login_error');
 			return View::make('admin.index2');
 		}
+	}
+
+	public function action_revexport()
+	{
+		$entries = BuildingRevenue::all();
+		$budgetFile = "";
+		$budgetFile = '"TI","FUND","RECEIPT","SCC","SUBJECT","OPU","Description","Proposed"'."\r\n";
+		
+		foreach($entries as $bb){
+
+			$bbp = BuildingRevenueProposed::where('buildingrevenue_id','=',$bb->id)->first();
+			
+			// if()
+			$budgetFile .= '"'.$bb->ti . '","';
+			$budgetFile .= $bb->fund.'","';
+			$budgetFile .= $bb->receipt.'","';
+			$budgetFile .= $bb->scc.'","';
+			$budgetFile .= $bb->subject.'","';
+			$budgetFile .= $bb->opu.'","';
+			$budgetFile .= $bb->description.'","';
+			$budgetFile .= $bbp->amount.'"'."\r\n";
+		}
+
+		$entries2 = Revenue::all();
+		$actBudgetFile = '"TI","FUND","RECEIPT","SCC","SUBJECT","OPU","Description","Proposed"'."\r\n";
+
+		foreach($entries2 as $b){
+
+			$bp = RevenueProposed::where('revenue_id','=',$b->id)->first();
+			
+			// if()
+			$actBudgetFile .= '"'.$b->ti . '","';
+			$actBudgetFile .= $b->fund.'","';
+			$actBudgetFile .= $b->receipt.'","';
+			$actBudgetFile .= $b->scc.'","';
+			$actBudgetFile .= $b->subject.'","';
+			$actBudgetFile .= $b->opu.'","';
+			$actBudgetFile .= $b->description.'","';
+			$actBudgetFile .= $bp->proposed.'"'."\r\n";
+			
+		}
+
+		$file = tempnam("tmp", "zip");
+		$zip = new ZipArchive();
+		$zip->open($file, ZipArchive::OVERWRITE);
+
+		$zip->addFromString("BUILDINGRevenue.CSV",$budgetFile);
+		$zip->addFromString("ActivityRevenue.CSV",$actBudgetFile);
+
+		$zip->close();
+
+		header('Content-Type: application/zip');
+        header('Content-Length: '.filesize($file));
+        header('Content-Disposition: attachement; filename="revenue.zip"');
+        readfile($file);
+        unlink($file);  
+
+		
 	}
 
 	public function action_revdelete()
