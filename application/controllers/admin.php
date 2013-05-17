@@ -1067,9 +1067,11 @@ class Admin_Controller  extends Base_Controller {
 					if(Input::has('submit')){
 						$values = Input::get();
 						$submit = array_pop($values);
+						// var_dump($values);
+						// exit();
 						foreach ($values as $name=>$value) {
 							list($p,$buildingrevenue_id) = explode("-",$name);
-							$rbuildingproposed = BuildingRevenueProposed::find($buildingrevenue_id);
+							$rbuildingproposed = BuildingRevenueProposed::where('buildingrevenue_id','=',$buildingrevenue_id)->first();
 							$rbuildingproposed->amount = $value;
 							$rbuildingproposed->save();
 						}
