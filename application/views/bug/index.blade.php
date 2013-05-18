@@ -26,5 +26,20 @@
             </div>
 	</form>
 
+    <table class="table table-striped">
+    @foreach($issues as $issue)
+        <tr>
+            <td>
+                <h4>{{$issue['title']}}  <small>Issue #{{$issue['number']}}</small></h4>
+                @if($issue['state'] === 'closed')
+                    <span class="label label-important">  {{$issue['state']}}  </span>
+                @else
+                    <span class="label label-success">  {{$issue['state']}}  </span>
+                @endif
+                <p>{{$issue['body']}}</p>
+            </td>
+        </tr>
+    @endforeach
+    </table>
 </div>
 @endsection

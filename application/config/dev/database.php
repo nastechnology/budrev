@@ -1,8 +1,8 @@
 <?php
 
 return array(
-	//'default' => 'mysql_dev',
-	'default' => 'mysql_stage',
+	'default' => 'mysql_dev',
+	// 'default' => 'mysql_stage',
 	/*
 	|--------------------------------------------------------------------------
 	| Database Query Logging
