@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"close",
+				"closeIssues"
+			],
+			[
+				"open",
+				"openIssues"
+			],
+			[
+				"buildingrev",
+				"buildingrevenue_id"
+			],
+			[
 				"building",
 				"buildingbudget_id"
 			],
@@ -328,14 +340,6 @@
 			}
 		},
 		{
-			"file": "application/views/layouts/main.blade.php",
-			"settings":
-			{
-				"buffer_size": 1848,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "application/routes.php",
 			"settings":
 			{
@@ -344,18 +348,10 @@
 			}
 		},
 		{
-			"file": "application/views/partials/nav.blade.php",
-			"settings":
-			{
-				"buffer_size": 2467,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "application/controllers/bug.php",
 			"settings":
 			{
-				"buffer_size": 928,
+				"buffer_size": 1229,
 				"line_ending": "Unix"
 			}
 		},
@@ -364,6 +360,30 @@
 			"settings":
 			{
 				"buffer_size": 267,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/controllers/admin.php",
+			"settings":
+			{
+				"buffer_size": 38296,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/views/admin/revenueedit.blade.php",
+			"settings":
+			{
+				"buffer_size": 1575,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/views/layouts/main.blade.php",
+			"settings":
+			{
+				"buffer_size": 1848,
 				"line_ending": "Unix"
 			}
 		}
@@ -400,18 +420,20 @@
 	},
 	"file_history":
 	[
+		"/Users/markmyers/Documents/Projects/budrev/application/views/partials/nav.blade.php",
+		"/Users/markmyers/Documents/Projects/budrev/application/views/layouts/main.blade.php",
+		"/Users/markmyers/Dropbox/Calendario/css/custom_1.css",
+		"/Users/markmyers/Documents/Projects/budrev/application/views/bug/index.blade.php",
+		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/admin.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/models/.gitignore",
-		"/Users/markmyers/Documents/Projects/budrev/application/views/bug/index.blade.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/bug.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/application.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/application.php",
-		"/Users/markmyers/Documents/Projects/budrev/application/config/dev/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/budget.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/config/database.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/views/admin/revedit.blade.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/home.php",
-		"/Users/markmyers/Documents/Projects/budrev/application/views/layouts/main.blade.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/routes.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/building.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/controllers/revenue.php",
@@ -443,7 +465,6 @@
 		"/Users/markmyers/Documents/Projects/budrev/application/views/admin/revenueview.blade.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/models/buildingrevenueproposed.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/views/admin/revenuedit.blade.php",
-		"/Users/markmyers/Documents/Projects/budrev/application/views/partials/nav.blade.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/models/buildingrevenue.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/models/buildingrevenueexpended.php",
 		"/Users/markmyers/Documents/Projects/budrev/application/models/buildingbudgetproposed.php",
@@ -526,8 +547,7 @@
 		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/medical.php",
 		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/phone.php",
 		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/userphone.php",
-		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/useraddress.php",
-		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/childuser.php"
+		"/Users/markmyers/Documents/Projects/involve/webapp-dev-env/involve/application/models/useraddress.php"
 	],
 	"find":
 	{
@@ -545,6 +565,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"IE",
+			"revenue",
 			"export",
 			"action_rev",
 			"proposed",
@@ -604,7 +626,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -629,40 +651,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/views/layouts/main.blade.php",
-					"settings":
-					{
-						"buffer_size": 1848,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								902,
-								902
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
 						"translation.y": 145.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "application/routes.php",
 					"settings":
 					{
@@ -682,52 +677,25 @@
 							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1210.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "application/views/partials/nav.blade.php",
-					"settings":
-					{
-						"buffer_size": 2467,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								690,
-								690
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 40.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
+					"buffer": 2,
 					"file": "application/controllers/bug.php",
 					"settings":
 					{
-						"buffer_size": 928,
+						"buffer_size": 1229,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								433,
-								433
+								1061,
+								1061
 							]
 						],
 						"settings":
@@ -742,7 +710,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 3,
 					"file": "application/models/budget.php",
 					"settings":
 					{
@@ -764,6 +732,87 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/controllers/admin.php",
+					"settings":
+					{
+						"buffer_size": 38296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1418,
+								1469
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "application/views/admin/revenueedit.blade.php",
+					"settings":
+					{
+						"buffer_size": 1575,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								95,
+								95
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "application/views/layouts/main.blade.php",
+					"settings":
+					{
+						"buffer_size": 1848,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								969,
+								969
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 145.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
