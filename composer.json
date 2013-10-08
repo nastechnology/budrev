@@ -1,10 +1,11 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
-	"keywords": ["framework", "laravel"],
+	"name": "nastechnology/budrev",
+	"description": "Internal app to handle budget(s) & revenue(s) for clubs",
+	"keywords": ["internal", "nacs"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.0.*"
+		"laravel/framework": "4.0.*",
+	    "way/generators": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

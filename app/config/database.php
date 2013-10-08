@@ -17,19 +17,6 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Default Database Connection Name
-	|--------------------------------------------------------------------------
-	|
-	| Here you may specify which of the database connections below you wish
-	| to use as your default connection for all database work. Of course
-	| you may use many connections at once using the Database library.
-	|
-	*/
-
-	'default' => 'mysql',
-
-	/*
-	|--------------------------------------------------------------------------
 	| Database Connections
 	|--------------------------------------------------------------------------
 	|
@@ -52,15 +39,34 @@ return array(
 			'prefix'   => '',
 		),
 
-		'mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'database',
-			'username'  => 'root',
-			'password'  => '',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
+		'mysql_prod' => array(
+			'driver' => 'mysql',
+			'host' => '10.20.15.56',
+			'database' => 'budrevs',
+			'username' => 'bruser',
+			'password' => 'ttwu*data',
+			'charset' => 'utf8',
+			'prefix' => '',
+		),
+
+		'mysql_stage' => array(
+			'driver' => 'mysql',
+			'host' => '10.20.15.56',
+			'database' => 'budrevs-stage',
+			'username' => 'stageuser',
+			'password' => 'ttwu*data',
+			'charset' => 'utf8',
+			'prefix' => '',
+		),
+
+		'mysql_dev' => array(
+			'driver' => 'mysql',
+			'host' => 'localhost',
+			'database' => 'budrevs',
+			'username' => 'root',
+			'password' => '',
+			'charset' => 'utf8',
+			'prefix' => '',
 		),
 
 		'pgsql' => array(
