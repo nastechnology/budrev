@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+if(!Auth::check()){
+    Route::get('/', function()
+    {
+	    return View::make('hello');
+    });
+}
