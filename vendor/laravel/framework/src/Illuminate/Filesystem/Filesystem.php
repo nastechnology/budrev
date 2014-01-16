@@ -23,6 +23,8 @@ class Filesystem {
 	 *
 	 * @param  string  $path
 	 * @return string
+	 *
+	 * @throws FileNotFoundException
 	 */
 	public function get($path)
 	{
@@ -47,6 +49,8 @@ class Filesystem {
 	 *
 	 * @param  string  $path
 	 * @return mixed
+	 *
+	 * @throws FileNotFoundException
 	 */
 	public function getRequire($path)
 	{
@@ -59,7 +63,7 @@ class Filesystem {
 	 * Require the given file once.
 	 *
 	 * @param  string  $file
-	 * @return void
+	 * @return mixed
 	 */
 	public function requireOnce($file)
 	{
@@ -89,11 +93,11 @@ class Filesystem {
 	{
 		if ($this->exists($path))
 		{
-			return $this->put($path, $data.$this->get($path));			
+			return $this->put($path, $data.$this->get($path));
 		}
 		else
 		{
-			return $this->put($data);
+			return $this->put($path, $data);
 		}
 	}
 
@@ -112,12 +116,18 @@ class Filesystem {
 	/**
 	 * Delete the file at a given path.
 	 *
-	 * @param  string  $path
+	 * @param  string|array  $paths
 	 * @return bool
 	 */
-	public function delete($path)
+	public function delete($paths)
 	{
-		return @unlink($path);
+		$paths = is_array($paths) ? $paths : func_get_args();
+
+		$success = true;
+
+		foreach ($paths as $path) { if ( ! @unlink($path)) $success = false; }
+
+		return $success;
 	}
 
 	/**
@@ -289,11 +299,19 @@ class Filesystem {
 	 * @param  string  $path
 	 * @param  int     $mode
 	 * @param  bool    $recursive
+	 * @param  bool    $force
 	 * @return bool
 	 */
-	public function makeDirectory($path, $mode = 0777, $recursive = false)
+	public function makeDirectory($path, $mode = 0777, $recursive = false, $force = false)
 	{
-		return mkdir($path, $mode, $recursive);
+		if ($force)
+		{
+			return @mkdir($path, $mode, $recursive);
+		}
+		else
+		{
+			return mkdir($path, $mode, $recursive);
+		}
 	}
 
 	/**
@@ -381,7 +399,7 @@ class Filesystem {
 		}
 
 		if ( ! $preserve) @rmdir($directory);
-		
+
 		return true;
 	}
 
