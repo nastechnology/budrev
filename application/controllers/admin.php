@@ -202,6 +202,8 @@ class Admin_Controller  extends Base_Controller {
 					}
 				}
 				
+				echo "<br>".sizeof($arrBudExpInsert)."<br>";
+				echo "<br><br><br>";
 				var_dump($arrBudExpInsert);
 				exit();
 
