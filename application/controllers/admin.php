@@ -192,20 +192,15 @@ class Admin_Controller  extends Base_Controller {
 			if(Input::has('submit')){
 				$fyyear = Input::get('fyyear');
 				$bp = BudgetProposed::all();
-				$arrBudExpInsert = array();
-				var_dump($bp);
 				foreach($bp as $budprop){
 					if($budprop->fyyear == $fyyear){
 						if($budprop->proposed == null){
 							$budprop->proposed = '0';
 						}
 						$arrBudExpInsert[] = array('revenue_id'=>$budprop->revenue_id,'fyyear'=>$budprop->fyyear,'amount'=>$budprop->proposed);
-						$revprop->delete();
+						$budprop->delete();
 					}
 				}
-
-				var_dump($arrBudExpInsert);
-				exit();
 				
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
@@ -217,7 +212,7 @@ class Admin_Controller  extends Base_Controller {
 					}
 					Session::flash('status_success', 'Successfully removed '.$fyyear);
 				} else {
-					Session::flash('status_error', 'There was an error removing '.$fyyear);
+					Session::flash('status_error', 'There were no budgets for '.$fyyear);
 				}
 
 				return View::make('admin.buddelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
