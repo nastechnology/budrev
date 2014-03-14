@@ -204,18 +204,17 @@ class Admin_Controller  extends Base_Controller {
 				
 				echo "<br>".sizeof($arrBudExpInsert)."<br>";
 				
-				// var_dump($arrBudExpInsert);
-				// exit();
 
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
-						var_dump($buds);
+						echo "Budget_id::" . $buds['budget_id'] . "<br>";
+						//var_dump($buds);
 						
-						$bud = Budget::find($buds['budget_id']);
-						$bud->is_proposed = '0';
-						$bud->save();
-						$be = new BudgetExpended($buds);
-						$be->save();
+						// $bud = Budget::find($buds['budget_id']);
+						// $bud->is_proposed = '0';
+						// $bud->save();
+						// $be = new BudgetExpended($buds);
+						// $be->save();
 
 					}
 					exit();
