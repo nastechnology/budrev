@@ -193,6 +193,7 @@ class Admin_Controller  extends Base_Controller {
 				$fyyear = Input::get('fyyear');
 				$bp = BudgetProposed::all();
 				$arrBudExpInsert = array();
+				var_dump($bp);
 				foreach($bp as $budprop){
 					if($budprop->fyyear == $fyyear){
 						if($budprop->proposed == null){
