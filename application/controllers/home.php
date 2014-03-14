@@ -66,6 +66,7 @@ class Home_Controller extends Base_Controller {
 								foreach (Revenue::find($rp->revenue_id)->received()->order_by('fyyear','desc')->get() as $value) {
 									$cy = date('Y');
 									$ty = $cy - 3;
+									var_dump($ty);
 									if($value->fyyear > $ty){
 					    				$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		    }
