@@ -213,7 +213,7 @@ class Admin_Controller  extends Base_Controller {
 						$bud->is_proposed = '0';
 						var_dump($bud);
 						//$bud->save();
-						$be = new BudgetExpended($bud);
+						$be = new BudgetExpended($buds);
 						var_dump($be);
 						//$be->save();
 
