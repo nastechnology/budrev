@@ -65,7 +65,7 @@ class Home_Controller extends Base_Controller {
 								$arrProposed[] = $rp;
 								$cy = date('Y');
 								$ty = $cy - 3;
-								foreach (Revenue::find($rp->revenue_id)->received()->where('fyyear','>',$ty)->order_by('fyyear','desc')->get() as $value) {
+								foreach (Revenue::find($rp->revenue_id)->received()->order_by('fyyear','desc')->get() as $value) {
 									$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		}
 							}
