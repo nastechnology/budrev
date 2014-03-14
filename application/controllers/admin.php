@@ -204,8 +204,8 @@ class Admin_Controller  extends Base_Controller {
 				
 				echo "<br>".sizeof($arrBudExpInsert)."<br>";
 				
-				var_dump($arrBudExpInsert);
-				exit();
+				// var_dump($arrBudExpInsert);
+				// exit();
 
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
