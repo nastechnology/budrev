@@ -169,7 +169,7 @@ class Admin_Controller  extends Base_Controller {
 		    		$arrBudgets[$obj->budget_id] = Budget::find($obj->budget_id);
 		    		$string = "";
 
-		    		foreach (Budget::find($obj->budget_id)->expended()->get() as $value) {
+		    		foreach (Budget::find($obj->budget_id)->expended()->order_by('fyyear', 'desc')->get() as $value) {
 		    			$string .= $value->fyyear . " : $".$value->amount."\n";
 		    		}
 		    		$arrExpended[$obj->budget_id] = $string;
