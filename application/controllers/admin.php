@@ -210,6 +210,8 @@ class Admin_Controller  extends Base_Controller {
 						var_dump($buds);
 						
 						$bud = Budget::find($buds['budget_id']);
+						var_dump($bud);
+						exit();
 						$bud->is_proposed = '0';
 						var_dump($bud);
 						//$bud->save();
