@@ -203,18 +203,19 @@ class Admin_Controller  extends Base_Controller {
 				}
 				
 				echo "<br>".sizeof($arrBudExpInsert)."<br>";
-				echo "<br><br><br>";
-				var_dump($arrBudExpInsert);
-				exit();
+				
 
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
 						$bud = Budget::find($buds['revenue_id']);
-						$budbud->is_proposed = '0';
-						$bud->save();
-						$be = new BudgetExpeneded($buds);
-						$be->save();
+						$bud->is_proposed = '0';
+						var_dump($bud);
+						//$bud->save();
+						$be = new BudgetExpeneded($bud);
+						var_dump($be);
+						//$be->save();
 					}
+					exit();
 					Session::flash('status_success', 'Successfully removed '.$fyyear);
 				} else {
 					Session::flash('status_error', 'There were no budgets for '.$fyyear);
