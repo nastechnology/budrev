@@ -208,7 +208,7 @@ class Admin_Controller  extends Base_Controller {
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
 						var_dump($buds);
-						exit();
+						
 						$bud = Budget::find($buds['budget_id']);
 						$bud->is_proposed = '0';
 						var_dump($bud);
@@ -216,6 +216,7 @@ class Admin_Controller  extends Base_Controller {
 						$be = new BudgetExpeneded($bud);
 						var_dump($be);
 						//$be->save();
+						
 					}
 					exit();
 					Session::flash('status_success', 'Successfully removed '.$fyyear);
