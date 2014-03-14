@@ -198,7 +198,7 @@ class Admin_Controller  extends Base_Controller {
 							$budprop->proposed = '0';
 						}
 						$arrBudExpInsert[] = array('budget_id'=>$budprop->budget_id,'fyyear'=>$budprop->fyyear,'amount'=>$budprop->proposed);
-						//$budprop->delete();
+						$budprop->delete();
 					}
 				}
 				
