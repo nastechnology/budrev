@@ -197,7 +197,7 @@ class Admin_Controller  extends Base_Controller {
 						if($budprop->proposed == null){
 							$budprop->proposed = '0';
 						}
-						$arrBudExpInsert[] = array('revenue_id'=>$budprop->revenue_id,'fyyear'=>$budprop->fyyear,'amount'=>$budprop->proposed);
+						$arrBudExpInsert[] = array('budget_id'=>$budprop->budget_id,'fyyear'=>$budprop->fyyear,'amount'=>$budprop->proposed);
 						//$budprop->delete();
 					}
 				}
@@ -209,7 +209,7 @@ class Admin_Controller  extends Base_Controller {
 					foreach($arrBudExpInsert as $buds){
 						var_dump($buds);
 						exit();
-						$bud = Budget::find($buds['revenue_id']);
+						$bud = Budget::find($buds['budget_id']);
 						$bud->is_proposed = '0';
 						var_dump($bud);
 						//$bud->save();
