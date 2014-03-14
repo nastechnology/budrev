@@ -202,6 +202,9 @@ class Admin_Controller  extends Base_Controller {
 						$revprop->delete();
 					}
 				}
+
+				var_dump($arrBudExpInsert);
+				exit();
 				
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
