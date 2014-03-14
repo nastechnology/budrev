@@ -64,7 +64,9 @@ class Home_Controller extends Base_Controller {
 							if($model['key'] == $_GET['key']){
 								$arrProposed[] = $rp;
 								foreach (Revenue::find($rp->revenue_id)->received()->order_by('fyyear','desc')->get() as $value) {
-					    			$string .= $value->fyyear . " : $".$value->amount."\n";
+									if($value->fyyear > (date('Y') - 3)){
+					    				$string .= $value->fyyear . " : $".$value->amount."\n";
+					    		    }
 					    		}
 							}
 
@@ -105,7 +107,7 @@ class Home_Controller extends Base_Controller {
 							if($model['key'] == $_GET['key']){
 								$arrProposed[] = $bp;
 								
-								foreach (Budget::find($bp->budget_id)->expended()->get() as $key=>$value) {
+								foreach (Budget::find($bp->budget_id)->expended()->order_by('fyyear','desc')->get() as $key=>$value) {
 					    			$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		}
 							}
