@@ -64,7 +64,9 @@ class Home_Controller extends Base_Controller {
 							if($model['key'] == $_GET['key']){
 								$arrProposed[] = $rp;
 								foreach (Revenue::find($rp->revenue_id)->received()->order_by('fyyear','desc')->get() as $value) {
-									if($value->fyyear > (date('Y') - 3)){
+									$cy = date('Y');
+									$ty = $cy - 3;
+									if($value->fyyear > $ty){
 					    				$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		    }
 					    		}
