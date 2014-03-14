@@ -67,7 +67,8 @@ class Home_Controller extends Base_Controller {
 									$cy = date('Y');
 									$ty = $cy - 3;
 									var_dump($ty);
-									if($value->fyyear > $ty){
+									$revYear = $value->fyyear;
+									if($revYear > $ty){
 					    				$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		    }
 					    		}
