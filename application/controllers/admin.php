@@ -213,10 +213,10 @@ class Admin_Controller  extends Base_Controller {
 						$bud->is_proposed = '0';
 						var_dump($bud);
 						//$bud->save();
-						$be = new BudgetExpeneded($bud);
+						$be = new BudgetExpended($bud);
 						var_dump($be);
 						//$be->save();
-						
+
 					}
 					exit();
 					Session::flash('status_success', 'Successfully removed '.$fyyear);
