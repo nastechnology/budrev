@@ -207,6 +207,8 @@ class Admin_Controller  extends Base_Controller {
 
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
+						var_dump($buds);
+						exit();
 						$bud = Budget::find($buds['revenue_id']);
 						$bud->is_proposed = '0';
 						var_dump($bud);
