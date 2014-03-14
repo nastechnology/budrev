@@ -46,6 +46,7 @@ return array(
 			'username' => 'bruser',
 			'password' => 'ttwu*data',
 			'charset' => 'utf8',
+			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
 		),
 
@@ -56,6 +57,7 @@ return array(
 			'username' => 'stageuser',
 			'password' => 'ttwu*data',
 			'charset' => 'utf8',
+			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
 		),
 
@@ -66,6 +68,7 @@ return array(
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',
+			'collation' => 'utf8_unicode_ci',
 			'prefix' => '',
 		),
 
