@@ -61,7 +61,7 @@ class Building_Controller extends Base_Controller {
 				    		$arrBudgets[] = $obj;
 				    		$string = "";
 
-				    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->get() as $value) {
+				    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->order_by('fyyear','DESC')->get() as $value) {
 				    			$string .= $value->fyyear . " : $".$value->amount."\n";
 				    		}
 

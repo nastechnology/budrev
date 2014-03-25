@@ -51,7 +51,7 @@
 		@endforeach
 	</tbody>
 </table>
-<br/><input type='submit' name='submit' class="btn" value='Submit' /></form>
+<br/><input type='submit' name='submit' class="btn" value='Save'><input type='submit' name='submit' class="btn" value='Submit' ></form>
 
 </div>
 

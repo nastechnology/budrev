@@ -761,6 +761,10 @@ class Admin_Controller  extends Base_Controller {
 
 	/* Building Section */
 
+  /**
+	 * Handles Building Budget for logged in user
+	 *
+	 */
 	public function action_building($param = "")
 	{
 		if( Session::has('user') || Auth::user() || Session::has('sa')){
@@ -793,11 +797,12 @@ class Admin_Controller  extends Base_Controller {
 						Session::flash('status_success', 'Your proposed building budget has been submitted');
 						return Redirect::to('/admin/building');
 					} else {
+						// View Users budget
 						$user = Session::get('user');
 						if(isset($_GET['building'])){
-							$entries = BuildingBudget::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->get();
+							$entries = BuildingBudget::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->order_by('fund')->get();
 						} else {
-							$entries = BuildingBudget::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
+							$entries = BuildingBudget::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->order_by('fund')->get();
 						}
 						if(sizeof($entries)>0){
 							$arrBudgets = array();
