@@ -18,6 +18,8 @@ class Building_Controller extends Base_Controller {
 			if(Input::has('submit')){
 				// Submitted Budget
 				$values = Input::get();
+				var_dump($vales);
+				exit();
 				$submit = array_pop($values);
 
 				$fy = "FY".(date('y')+1);

@@ -93,7 +93,7 @@ class Admin_Controller  extends Base_Controller {
 		return Redirect::to('/');
 	}
 
-	/* Budget Section */
+	/* Activity Accounts Budget Section */
 
 	public function action_bud()
 	{
@@ -394,7 +394,7 @@ class Admin_Controller  extends Base_Controller {
 	}
 	/* End Budget Section */
 
-	/*  Revenue Section */
+	/* Activity Accounts Revenue Section */
 
 	public function action_rev()
 	{
