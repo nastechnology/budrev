@@ -1006,7 +1006,7 @@ class Admin_Controller  extends Base_Controller {
 
 						echo "<tr>";
 						echo "<td>".$value->ti."</td>";
-						echo "<td>00".$value->fund."</td>";
+						echo "<td>".$value->fund."</td>";
 						echo "<td>".$value->function."</td>";
 						echo "<td>".$value->object."</td>";
 						echo "<td>".$value->scc."</td>";
