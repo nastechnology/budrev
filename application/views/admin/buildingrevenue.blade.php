@@ -26,7 +26,7 @@
 			<tr>
 				<td span="12"> Fund: 00{{ $revenue->fund }}</td>
 			</tr>
-			@else
+			@endif
 			<tr>
 				<td>{{ $revenue->ti }}</td>
 				<td>{{ $revenue->fund }}</td>
@@ -38,7 +38,6 @@
 				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $revenue->id }}'></input></div></td>
 				<td><a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$revenue->id] }}">Previous Years</a></td>
 			</tr>
-			@endif
 			<?php $prevFund = $revenue->fund; ?>
 		@endforeach
 	</tbody>

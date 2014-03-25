@@ -29,7 +29,7 @@
 			<tr>
 				<td colspan="12"> Fund: 00{{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
 			</tr>
-			@else
+			@endif
 			<tr>
 				<td>{{ $budget->ti }}</td>
 				<td>00{{ $budget->fund }}</td>
@@ -46,7 +46,6 @@
 				<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 				</td>
 			</tr>
-			@endif
 			<?php $prevFund = $budget->fund; ?>
 		@endforeach
 	</tbody>
