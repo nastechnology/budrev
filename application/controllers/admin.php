@@ -1,7 +1,7 @@
 <?php
 
 class Admin_Controller  extends Base_Controller {
-	
+
 	public function action_index()
 	{
 		if(Session::has('sa') && Session::has('user') || Auth::user()){
@@ -40,7 +40,7 @@ class Admin_Controller  extends Base_Controller {
 	        	if(User::where('username','=',$username)->first()){
 					//$user = User::where('username','=',Auth::user()->name)->first();
 					$user = Auth::user();
-					
+
 					Session::put('user',$user);
 					if($user->is_sa){
 						Session::put('sa',1);
@@ -48,11 +48,11 @@ class Admin_Controller  extends Base_Controller {
 					} else {
 						return Redirect::to('building/index');
 					}
-		        	
+
 		        } else {
 		        	Session::flash('login_error','You do not have access to this app.');
 		        	return View::make('admin.index2');
-		        } 
+		        }
 	        } else {
 	        	echo "Failed to login";
 	        }
@@ -64,7 +64,7 @@ class Admin_Controller  extends Base_Controller {
 	            'password' => $password
 	        );
 			if(Auth::attempt($credentials)){
-				// Authenticated against LDAP now check to see if they 
+				// Authenticated against LDAP now check to see if they
 				// are allowed to access resource.
 				if(User::where('username','=',$username)->first()){
 					$user = User::where('username','=',Auth::user()->name)->first();
@@ -75,11 +75,11 @@ class Admin_Controller  extends Base_Controller {
 					} else {
 						return Redirect::to('building/index');
 					}
-		        	
+
 		        } else {
 		        	Session::flash('login_error','You do not have access to this app.');
 		        	return View::make('admin.index2');
-		        } 
+		        }
 			} else {
 				echo "Failed to login";
 			}
@@ -151,7 +151,7 @@ class Admin_Controller  extends Base_Controller {
 					list($p,$budget_id) = explode("-",$name);
 
 					$bud = BudgetProposed::where('budget_id','=',$budget_id)->first();
-					
+
 					$bud->proposed = $value;
 					$bud->save();
 				}
@@ -164,7 +164,7 @@ class Admin_Controller  extends Base_Controller {
 		    	$arrBudgets = array();
 		    	$arrExpended = array();
 		    	$arrProposed = array();
-		    	
+
 		    	foreach($entries as $key=>$obj){
 		    		$arrBudgets[$obj->budget_id] = Budget::find($obj->budget_id);
 		    		$string = "";
@@ -201,15 +201,15 @@ class Admin_Controller  extends Base_Controller {
 						$budprop->delete();
 					}
 				}
-				
+
 				echo "<br>".sizeof($arrBudExpInsert)."<br>";
-				
+
 
 				if(sizeof($arrBudExpInsert) > 0){
 					foreach($arrBudExpInsert as $buds){
 						// echo "Budget_id::" . $buds['budget_id'] . "<br>";
 						//var_dump($buds);
-						
+
 						$bud = Budget::find($buds['budget_id']);
 						$bud->is_proposed = '0';
 						$bud->save();
@@ -223,7 +223,7 @@ class Admin_Controller  extends Base_Controller {
 				}
 
 				return View::make('admin.buddelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
-				
+
 			} else {
 				return View::make('admin.buddelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
@@ -261,12 +261,12 @@ class Admin_Controller  extends Base_Controller {
 		$entries = BuildingBudget::all();
 		$budgetFile = "";
 		$budgetFile = '"TI","FUND","FUNCTION","OBJECT","SCC","SUBJECT","OPU","IL","JOB","Description","Proposed"'."\r\n";
-		
-		
+
+
 		foreach($entries as $bb){
 
 			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
-			
+
 			// if()
 			$budgetFile .= '"'.$bb->ti . '","';
 			$budgetFile .= $bb->fund.'","';
@@ -287,7 +287,7 @@ class Admin_Controller  extends Base_Controller {
 		foreach($entries2 as $b){
 
 			$bp = BudgetProposed::where('budget_id','=',$b->id)->first();
-			
+
 			// if()
 			$actBudgetFile .= '"'.$b->ti . '","';
 			$actBudgetFile .= $b->fund.'","';
@@ -300,7 +300,7 @@ class Admin_Controller  extends Base_Controller {
 			$actBudgetFile .= $b->job.'","';
 			$actBudgetFile .= $b->description.'","';
 			$actBudgetFile .= $bp->proposed.'"'."\r\n";
-			
+
 		}
 
 		$file = tempnam("tmp", "zip");
@@ -316,9 +316,9 @@ class Admin_Controller  extends Base_Controller {
         header('Content-Length: '.filesize($file));
         header('Content-Disposition: attachement; filename="budget.zip"');
         readfile($file);
-        unlink($file);  
+        unlink($file);
 
-		
+
 	}
 
 	public function action_buds($param = "")
@@ -328,10 +328,10 @@ class Admin_Controller  extends Base_Controller {
 			$rBadge = $this->_getTotal() - $this->_getProposed();
 			switch ($param) {
 				case 'add':
-					
+
 					if(Input::has('submit')){
 						$values = Input::get();
-						
+
 						$submit = array_pop($values);
 						$budget = new Budget($values);
 
@@ -342,14 +342,14 @@ class Admin_Controller  extends Base_Controller {
 						} else {
 							Session::flash('status_error',"Error adding ".$budget->description." budget.");
 						}
-					} 
-					
-					return View::make('admin.budsadd')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));			
-				
+					}
+
+					return View::make('admin.budsadd')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
+
 					break;
 				case 'edit':
 					if(Input::has('submit')){
-				
+
 						$budget = Budget::find(Input::get('id'));
 						$values = Input::get();
 						$submit = array_pop($values);
@@ -372,7 +372,7 @@ class Admin_Controller  extends Base_Controller {
 
 				case 'delete':
 					$id = $_GET['id'];
-			
+
 					if(Budget::find($id)->delete()){
 						Session::flash('status_success', "Successfully deleted budget");
 						return View::make('admin.buds', array('budgets'=>Budget::all()))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
@@ -380,13 +380,13 @@ class Admin_Controller  extends Base_Controller {
 						Session::flash('status_error',"Error deleting budget.");
 					}
 					break;
-				
+
 				default:
 					$budgets = Budget::all();
 					return View::make('admin.buds', array('budgets'=>$budgets))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 					break;
 			}
-		
+
 		} else {
 			Session::forget('login_error');
 			return View::make('admin.index2');
@@ -448,7 +448,7 @@ class Admin_Controller  extends Base_Controller {
 				// Save Revenue Proposed
 				$values = Input::get();
 				$submit = array_pop($values);
-				
+
 				foreach($values as $name=>$value){
 					list($p,$revenue_id) = explode("-",$name);
 					$rev = RevenueProposed::where('revenue_id','=',$revenue_id)->first();
@@ -460,13 +460,13 @@ class Admin_Controller  extends Base_Controller {
 			} else {
 				$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 				$rBadge = $this->_getTotal() - $this->_getProposed();
-				
+
 				$entries = RevenueProposed::all();
 
 		    	$arrRevenues = array();
 		    	$arrExpended = array();
 		    	$arrProposed = array();
-		    	
+
 		    	foreach($entries as $key=>$obj){
 		    		$arrRevenues[$obj->revenue_id] = Revenue::find($obj->revenue_id);
 		    		$string = "";
@@ -491,11 +491,11 @@ class Admin_Controller  extends Base_Controller {
 		$entries = BuildingRevenue::all();
 		$budgetFile = "";
 		$budgetFile = '"TI","FUND","RECEIPT","SCC","SUBJECT","OPU","Description","Proposed"'."\r\n";
-		
+
 		foreach($entries as $bb){
 
 			$bbp = BuildingRevenueProposed::where('buildingrevenue_id','=',$bb->id)->first();
-			
+
 			// if()
 			$budgetFile .= '"'.$bb->ti . '","';
 			$budgetFile .= $bb->fund.'","';
@@ -513,7 +513,7 @@ class Admin_Controller  extends Base_Controller {
 		foreach($entries2 as $b){
 
 			$bp = RevenueProposed::where('revenue_id','=',$b->id)->first();
-			
+
 			// if()
 			$actBudgetFile .= '"'.$b->ti . '","';
 			$actBudgetFile .= $b->fund.'","';
@@ -523,7 +523,7 @@ class Admin_Controller  extends Base_Controller {
 			$actBudgetFile .= $b->opu.'","';
 			$actBudgetFile .= $b->description.'","';
 			$actBudgetFile .= $bp->proposed.'"'."\r\n";
-			
+
 		}
 
 		$file = tempnam("tmp", "zip");
@@ -539,9 +539,9 @@ class Admin_Controller  extends Base_Controller {
         header('Content-Length: '.filesize($file));
         header('Content-Disposition: attachement; filename="revenue.zip"');
         readfile($file);
-        unlink($file);  
+        unlink($file);
 
-		
+
 	}
 
 	public function action_revdelete()
@@ -562,7 +562,7 @@ class Admin_Controller  extends Base_Controller {
 						$revprop->delete();
 					}
 				}
-				
+
 				if(sizeof($arrRevRecInsert) > 0){
 					foreach($arrRevRecInsert as $rps){
 						$rev = Revenue::find($rps['revenue_id']);
@@ -577,7 +577,7 @@ class Admin_Controller  extends Base_Controller {
 				}
 
 				return View::make('admin.revdelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
-				
+
 			} else {
 				return View::make('admin.revdelete')->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 			}
@@ -628,7 +628,7 @@ class Admin_Controller  extends Base_Controller {
 						} else {
 							Session::flash('status_error',"Error adding ".$rev->description." revenue.");
 						}
-					} 
+					}
 
 					return View::make('admin.revsadd')->nest('nav','partials.nav', array('bBadge'=>$bBadge, 'rBadge'=>$rBadge));
 					break;
@@ -657,7 +657,7 @@ class Admin_Controller  extends Base_Controller {
 
 				case 'delete':
 					$id = $_GET['id'];
-					
+
 					if(Revenue::find($id)->delete()){
 						Session::flash('status_success', "Successfully deleted revenue");
 						return View::make('admin.revs', array('revenues'=>Revenue::all()))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
@@ -693,7 +693,7 @@ class Admin_Controller  extends Base_Controller {
 	{
 		$bBadge = $this->_getTotal('budget') - $this->_getProposed('budget');
 		$rBadge = $this->_getTotal() - $this->_getProposed();
-			
+
 		if(Session::has('sa') && Session::has('user') || Auth::user()){
 			 switch($param){
 				case 'add':
@@ -805,27 +805,27 @@ class Admin_Controller  extends Base_Controller {
 					    	$arrProposed = array();
 
 					    	$fy = date('y') + 1;
-					    	
+
 					    	$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
 
 					    	foreach($entries as $key=>$obj){
 					    		$arrBudgets[] = $obj;
 					    		$string = "";
-					    		
+
 					    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->get() as $value) {
 					    			$string .= $value->fyyear . " : $".$value->amount."\n";
 					    		}
-					    		
+
 					    		$arrExpended[$obj->id] = $string;
 					    	}
-					    	
+
 					    	return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended,'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
 				    	} else {
 				    		return View::make('admin.buildingbudget2')->nest('nav','partials.nav2');
 				    	}
 				    }
 					break;
-				
+
 				case 'revenue':
 					if(Input::has('submit')){
 						// Submitted Revenues
@@ -859,7 +859,7 @@ class Admin_Controller  extends Base_Controller {
 						} else {
 							$entries = BuildingRevenue::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
 						}
-					
+
 						if(sizeof($entries)>0){
 							$arrRevs = array();
 					    	$arrExpended = array();
@@ -867,7 +867,7 @@ class Admin_Controller  extends Base_Controller {
 							foreach($entries as $key=>$obj){
 					    		$arrRevs[] = $obj;
 					    		$string = "";
-					    		
+
 					    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
 
 					    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
@@ -875,7 +875,7 @@ class Admin_Controller  extends Base_Controller {
 					    			Log::write("info", $obj->id.":::".$string);
 					    		}
 
-					    		
+
 					    		$arrExpended[$obj->id] = $string;
 					    	}
 							return View::make('admin.buildingrevenue', array('revenues'=>$arrRevs,'expended'=>$arrExpended))->nest('nav','partials.nav2');
@@ -893,7 +893,7 @@ class Admin_Controller  extends Base_Controller {
 		    		foreach($entries as $bb){
 
 		    			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
-		    			
+
 		    			$budgetFile .= $bb->ti . ",";
 		    			$budgetFile .= $bb->fund.",";
 		    			$budgetFile .= $bb->function .",";
@@ -936,7 +936,7 @@ class Admin_Controller  extends Base_Controller {
 			        header('Content-Length: '.filesize($file));
 			        header('Content-Disposition: attachement; filename="budrev.zip"');
 			        readfile($file);
-			        unlink($file);    	
+			        unlink($file);
 					break;
 
 				default:
@@ -999,14 +999,14 @@ class Admin_Controller  extends Base_Controller {
 
 
 					foreach ($buildingBudget as $key => $value) {
-							
+
 						// $arrJson[$key] = ($value->attributes);
 						$fy = 'FY'.(date('y')+1);
 						$bbuildingproposed = BuildingBudgetProposed::where('buildingbudget_id','=',$value->id)->where('fyyear','=',$fy)->first();
-						
+
 						echo "<tr>";
 						echo "<td>".$value->ti."</td>";
-						echo "<td>".$value->fund."</td>";
+						echo "<td>00".$value->fund."</td>";
 						echo "<td>".$value->function."</td>";
 						echo "<td>".$value->object."</td>";
 						echo "<td>".$value->scc."</td>";
@@ -1032,7 +1032,7 @@ class Admin_Controller  extends Base_Controller {
 					}
 
 					break;
-				
+
 				default:
 					$arrBuildings = Building::all();
 					if(Input::has('submit')){
@@ -1057,7 +1057,7 @@ class Admin_Controller  extends Base_Controller {
 			Session::flash('login_error','You do not have access to this app.');
 		    return View::make('admin.index2');
 		}
-	} 
+	}
 	/* End Building Budget Section */
 
 	/* Building Revenue Section */
@@ -1083,22 +1083,22 @@ class Admin_Controller  extends Base_Controller {
 						}
 
 						Session::flash('status_success','Successfully updated all the building revenues');
-					} 
+					}
 
 					return View::make('admin.revenueedit', array('buildings'=>$buildings))->nest('nav','partials.nav', array('bBadge'=>$bBadge,'rBadge'=>$rBadge));
 					break;
-				
+
 				case 'json':
 					$buildingBudget = BuildingRevenue::where('building_id','=',$_GET['id'])->get();
 
 					//echo json_encode($buildingBudget);
 					$arrJson = array();
 					foreach ($buildingBudget as $key => $value) {
-							
+
 						// $arrJson[$key] = ($value->attributes);
 						$fy = 'FY'.(date('y')+1);
 						$rbuildingproposed = BuildingRevenueProposed::where('buildingrevenue_id','=',$value->id)->where('fyyear','=',$fy)->first();
-						
+
 						echo "<tr>";
 						echo "<td>".$value->ti."</td>";
 						echo "<td>".$value->fund."</td>";
@@ -1136,5 +1136,5 @@ class Admin_Controller  extends Base_Controller {
 	}
 
 	/* End Building Revenue Section */
-	
+
 }
