@@ -37,8 +37,8 @@ class Building_Controller extends Base_Controller {
 						$bbp->amount = $value;
 					}
 
-					$bb->save();
-					$bbp->save();
+					//$bb->save();
+					//$bbp->save();
 				}
 				Session::flash('status_success', 'Your proposed building budget has been submitted');
 				return Redirect::to('/building');
