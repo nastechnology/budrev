@@ -79,10 +79,10 @@
 		var nMoney = value;
 		var fundInit = document.getElementById('00'+fund+'total');
 		var fundTotal = fundInit.innerHTML;
-		var newTotal = (parseInt(fundTotal) + nMoney).toFixed(2);
-		fundInit.innerHTML = newTotal;
+		var newTotal = fundTotal + nMoney;
+		fundInit.innerHTML = newTotal.toFixed(2);
 	}
-	
+
 	$(function() {
 	    $("form").bind("keypress", function(e) {
 	            if (e.keyCode == 13) return false;
