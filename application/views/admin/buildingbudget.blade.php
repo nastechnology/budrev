@@ -27,7 +27,7 @@
 		@foreach($budgets as $budget)
 		  @if($prevFund != $budget->fund)
 			<tr>
-				<td span="12"> Fund: 00{{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
+				<td colspan="12"> Fund: 00{{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
 			</tr>
 			@else
 			<tr>
@@ -80,7 +80,7 @@
 		var fundInit = document.getElementById('00'+fund+'total');
 		var fundTotal = fundInit.innerHTML;
 		var newTotal = (fundTotal + value).toFixed(2);
-		fundInit = newTotal;
+		fundInit.innerHTML = newTotal;
 	}
 	$(function() {
 	    $("form").bind("keypress", function(e) {
