@@ -82,6 +82,7 @@
 		var newTotal = (parseInt(fundTotal) + nMoney).toFixed(2);
 		fundInit.innerHTML = newTotal;
 	}
+	
 	$(function() {
 	    $("form").bind("keypress", function(e) {
 	            if (e.keyCode == 13) return false;

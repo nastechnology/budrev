@@ -8,15 +8,15 @@
 	<link href="/css/bootstrap.css" rel="stylesheet" />
 	<link href="/css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="/css/default.css" rel="stylesheet" />
-	
-	
+
+
 	<!--  HTML5 shim, for IE6-8 support of HTML5 Elements -->
 	<!--[if lt IE 9]
 		<script srce="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top"> 
+<div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -37,27 +37,27 @@
       	<p>Put together by <a href="http://tech.napoleonareaschools.org">Technology Department</a></p>
         <!--  <p>&copy; Company 2012</p>-->
 
-    </footer>	
+    </footer>
 
 </div>
 
-	<script type="text/javascript" src="/js/jquery-1.9.0.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript" src="/js/bootstrap-modal.js"></script>
 	<script type="text/javascript" src="/js/bootstrap-tooltip.js"></script>
 	<script type="text/javascript" src="/js/bootstrap-popover.js"></script>
 	<script type="text/javascript">
-	$('.dropdown-toggle').dropdown();   
-	
+	$('.dropdown-toggle').dropdown();
+
 
 	$('a[rel=popover]')
       .popover('toggle')
       .click(function(e) {
         e.preventDefault()
 	});
-	$('a[rel=popover]').popover('hide')	    	     
-			
+	$('a[rel=popover]').popover('hide')
+
 	</script>
 </body>
 </html>
