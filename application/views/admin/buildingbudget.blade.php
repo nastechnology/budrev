@@ -79,7 +79,7 @@
 		var nMoney = value;
 		var fundInit = document.getElementById('00'+fund+'total');
 		var fundTotal = fundInit.innerHTML;
-		var newTotal = (fundTotal.value + nMoney).toFixed(2);
+		var newTotal = (parseInt(fundTotal) + nMoney).toFixed(2);
 		fundInit.innerHTML = newTotal;
 	}
 	$(function() {
