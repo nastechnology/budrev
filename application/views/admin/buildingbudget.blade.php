@@ -23,10 +23,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		<?php $prevFund == ""; ?>
 		@foreach($budgets as $budget)
+		  @if($prevFund != $budget->fund)
+			<tr>
+				<td span="12"> Fund: 00{{ $budget->fund }}</td>
+			</tr>
+			@else
 			<tr>
 				<td>{{ $budget->ti }}</td>
-				<td>{{ $budget->fund }}</td>
+				<td>00{{ $budget->fund }}</td>
 				<td>{{ $budget->function }}</td>
 				<td>{{ $budget->object }}</td>
 				<td>{{ $budget->scc }}</td>
@@ -40,6 +46,8 @@
 				<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 				</td>
 			</tr>
+			@endif
+			<?php $prevFund = $budget->fund; ?>
 		@endforeach
 	</tbody>
 </table>
@@ -63,7 +71,7 @@
 			current.innerHTML = testvalue;
 		}
 	}
-	$(function() {	 
+	$(function() {
 	    $("form").bind("keypress", function(e) {
 	            if (e.keyCode == 13) return false;
 	      });

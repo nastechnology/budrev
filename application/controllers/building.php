@@ -1,7 +1,7 @@
 <?php
 
 class Building_Controller extends Base_Controller {
-	
+
 	public function action_index()
 	{
 		if(Session::has('user')){
@@ -43,9 +43,9 @@ class Building_Controller extends Base_Controller {
 			} else {
 				$user = Session::get('user');
 				if(isset($_GET['building'])){
-					$entries = BuildingBudget::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->get();
+					$entries = BuildingBudget::where('building_id','=',$_GET['building'])->where('is_proposed','=',0)->order_by('fund')->get();
 				} else {
-					$entries = BuildingBudget::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
+					$entries = BuildingBudget::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->order_by('fund')->get();
 				}
 				if(sizeof($entries)>0){
 					$arrBudgets = array();
@@ -53,20 +53,22 @@ class Building_Controller extends Base_Controller {
 			    	$arrProposed = array();
 
 			    	$fy = date('y') + 1;
-			    	
+
 			    	$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
 
 			    	foreach($entries as $key=>$obj){
-			    		$arrBudgets[] = $obj;
-			    		$string = "";
-			    		
-			    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->get() as $value) {
-			    			$string .= $value->fyyear . " : $".$value->amount."\n";
-			    		}
-			    		
-			    		$arrExpended[$obj->id] = $string;
+							if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9'){
+				    		$arrBudgets[] = $obj;
+				    		$string = "";
+
+				    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->get() as $value) {
+				    			$string .= $value->fyyear . " : $".$value->amount."\n";
+				    		}
+
+				    		$arrExpended[$obj->id] = $string;
+							}
 			    	}
-			    	
+
 			    	return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended,'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
 		    	} else {
 		    		return View::make('admin.buildingbudget2')->nest('nav','partials.nav2');
@@ -112,7 +114,7 @@ class Building_Controller extends Base_Controller {
 				} else {
 					$entries = BuildingRevenue::where('building_id','=', $user->building_id)->where('is_proposed','=',0)->get();
 				}
-			
+
 				if(sizeof($entries)>0){
 					$arrRevs = array();
 			    	$arrExpended = array();
@@ -120,7 +122,7 @@ class Building_Controller extends Base_Controller {
 					foreach($entries as $key=>$obj){
 			    		$arrRevs[] = $obj;
 			    		$string = "";
-			    		
+
 			    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
 
 			    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
@@ -128,7 +130,7 @@ class Building_Controller extends Base_Controller {
 			    			Log::write("info", $obj->id.":::".$string);
 			    		}
 
-			    		
+
 			    		$arrExpended[$obj->id] = $string;
 			    	}
 					return View::make('admin.buildingrevenue', array('revenues'=>$arrRevs,'expended'=>$arrExpended))->nest('nav','partials.nav2');
@@ -151,7 +153,7 @@ class Building_Controller extends Base_Controller {
     		foreach($entries as $bb){
 
     			$bbp = BuildingBudgetProposed::where('buildingbudget_id','=',$bb->id)->first();
-    			
+
     			$budgetFile .= '"'.$bb->ti . '","';
     			$budgetFile .= $bb->fund.'","';
     			$budgetFile .= $bb->function .'","';
@@ -194,7 +196,7 @@ class Building_Controller extends Base_Controller {
 	        header('Content-Length: '.filesize($file));
 	        header('Content-Disposition: attachement; filename="budrev.zip"');
 	        readfile($file);
-	        unlink($file);    		
+	        unlink($file);
 
 		} else {
 			return View::make('admin.index2');

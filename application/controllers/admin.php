@@ -471,7 +471,7 @@ class Admin_Controller  extends Base_Controller {
 		    		$arrRevenues[$obj->revenue_id] = Revenue::find($obj->revenue_id);
 		    		$string = "";
 
-		    		foreach (Revenue::find($obj->revenue_id)->received()->get() as $value) {
+		    		foreach (Revenue::find($obj->revenue_id)->received()->order_by('fyyear', 'desc')->get() as $value) {
 		    			$string .= $value->fyyear . " : $".$value->amount."\n";
 		    		}
 		    		$arrExpended[$obj->revenue_id] = $string;
