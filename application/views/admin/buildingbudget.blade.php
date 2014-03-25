@@ -27,7 +27,7 @@
 		@foreach($budgets as $budget)
 		  @if($prevFund != $budget->fund)
 			<tr>
-				<td span="12"> Fund: 00{{ $budget->fund }}</td>
+				<td span="12"> Fund: 00{{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
 			</tr>
 			@else
 			<tr>
@@ -41,7 +41,7 @@
 				<td>{{ $budget->il }}</td>
 				<td>{{ $budget->job }}</td>
 				<td>{{ $budget->description }}</td>
-				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'))"></input></div></td>
+				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})"></input></div></td>
 				<td>
 				<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 				</td>
@@ -56,10 +56,12 @@
 </div>
 
 <script type="text/javascript">
-	function subtractFromBudget(obj, current)
+	function subtractFromBudget(obj, current, fund)
 	{
 		var value = obj.value;
 		var budgettotal = current.innerHTML;
+
+		addToFundBudget(value, fund);
 
 		var testvalue = (budgettotal - value).toFixed(2);
 		if(testvalue < 0){
@@ -70,6 +72,15 @@
 		} else {
 			current.innerHTML = testvalue;
 		}
+	}
+
+	function addToFundBudget(value, fund)
+	{
+		var nMoney = value;
+		var fundInit = document.getElementById('00'+fund+'total');
+		var fundTotal = fundInit.innerHTML;
+		var newTotal = (fundTotal + value).toFixed(2);
+		fundInit = newTotal;
 	}
 	$(function() {
 	    $("form").bind("keypress", function(e) {
