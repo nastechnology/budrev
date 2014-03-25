@@ -76,9 +76,9 @@
 
 	function addToFundBudget(value, fund)
 	{
-		var nMoney = value;
+		var nMoney = parseInt(value);
 		var fundInit = document.getElementById('00'+fund+'total');
-		var fundTotal = fundInit.innerHTML;
+		var fundTotal = parseInt(fundInit.innerHTML);
 		var newTotal = fundTotal + nMoney;
 		fundInit.innerHTML = newTotal.toFixed(2);
 	}
