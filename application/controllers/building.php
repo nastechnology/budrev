@@ -87,6 +87,8 @@ class Building_Controller extends Base_Controller {
 			if(Input::has('submit')){
 				// Submitted Revenues
 				$values = Input::get();
+				var_dump($values);
+				exit();
 				$submit = array_pop($values);
 
 				$fy = "FY".(date('y')+1);
