@@ -4,7 +4,7 @@
 @include('plugins.status')
 <div class="page-header"><h1>Building Budgets <small>All Budgets</small></h1></div>
 <h3 id="money">$<span id="budgettotal">{{ $budgettotal }}</span></h3>
-<form name='budreport' method='post' action='/admin/building/budget'>
+<form name='budreport' method='post' action='/building/budget'>
 <table class='table-striped table'>
 	<thead>
 		<tr>
