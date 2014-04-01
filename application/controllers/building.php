@@ -89,7 +89,6 @@ class Building_Controller extends Base_Controller {
 										}
 									}
 									$arrFundTotals[$prevFund] = "$fundTotal";
-									var_dump($arrFundTotals);
 								}
 							return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended, 'fundTotal'=>$arrFundTotals,'edit'=>true, 'proposed'=>$arrProposed, 'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
 						}

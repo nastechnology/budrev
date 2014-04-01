@@ -29,7 +29,7 @@
 	<tbody>
 		<?php
 		$prevFund == "";
-		$fundTotal = 0.00;
+		//$fundTotal = 0.00;
 		?>
 		@foreach($budgets as $budget)
 		  @if($prevFund != $budget->fund)
