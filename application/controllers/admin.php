@@ -771,10 +771,14 @@ class Admin_Controller  extends Base_Controller {
 			$user = Session::get('user');
 			switch ($param) {
 				case 'budget':
-					if(Input::has('submit')){
+					if(Input::has('submit') || Input::has('save')){
 						// Submitted Budget
-						$values = Input::get();
+
+						$values = Input::all();
+						var_dump($vales);
+						exit();
 						$submit = array_pop($values);
+
 
 						$fy = "FY".(date('y')+1);
 						foreach ($values as $name=>$value) {
