@@ -45,7 +45,7 @@
 				<td>{{ $budget->il }}</td>
 				<td>{{ $budget->job }}</td>
 				<td>{{ $budget->description }}</td>
-				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})" onload="addToFundBudget(this.value, {{$budget->fund}})"
+				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})"
 				@if(!is_null($proposed[$budget->id]))
 				value="{{$proposed[$budget->id]->amount}}"
 				@endif
