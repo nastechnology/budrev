@@ -57,18 +57,27 @@ class Building_Controller extends Base_Controller {
 								$arrBudgets = array();
 									$arrExpended = array();
 									$arrProposed = array();
+									$arrFundTotals = array();
 									$fy = date('y') + 1;
 
 									$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
 
+									$prevFund = "";
+									$fundTotal = "0.00";
 									foreach($entries as $key=>$obj){
 										if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9'){
 											$arrBudgets[] = $obj;
 											$string = "";
 
                       $arrProposed[$obj->id] = BuildingBudgetProposed::where('buildingbudget_id','=',$obj->id)->first();
+											if($prevFund != $obj->fund){
+												$prevFund = $obj->fund;
+												$arrFundTotals[$obj->fund] = $fundTotal;
+												$fundTotal = "";
+											}
 
 											$budgettotal->amount = $budgettotal->amount - $arrProposed[$obj->id]->amount;
+											$fundTotal = $fundTotal + $arrProposed[$obj->id]->amount;
 
 											foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->order_by('fyyear','DESC')->get() as $value) {
 												$string .= $value->fyyear . " : $".$value->amount."\n";
@@ -77,8 +86,9 @@ class Building_Controller extends Base_Controller {
 											$arrExpended[$obj->id] = $string;
 										}
 									}
+									$arrFundTotals[$prevFund] = $fundTotal;
 								}
-							return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended, 'edit'=>true, 'proposed'=>$arrProposed, 'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
+							return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended, 'fundTotal'=>$arrFundTotals,'edit'=>true, 'proposed'=>$arrProposed, 'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
 						}
 				  break;
 

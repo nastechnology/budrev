@@ -27,11 +27,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php $prevFund == ""; ?>
+		<?php
+		$prevFund == "";
+		//$fundTotal = "0.00";
+		?>
 		@foreach($budgets as $budget)
-		  @if($prevFund != $budget->fund)
+		  @if($prevFund != $budget->fund && !is_null($fundTotal))
 			<tr>
-				<td colspan="12"> Fund: {{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
+				<td colspan="12"> Fund: {{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">{{$fundTotal[$budget->fund]}}</span></h3></td>
 			</tr>
 			@endif
 			<tr>
