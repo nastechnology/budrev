@@ -43,7 +43,7 @@
 				<td>{{ $budget->description }}</td>
 				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})">
 				@if(!is_null($proposed[$budget->id]))
-				{{$proposed[$budget->id]}}
+				{{$proposed[$budget->id]->amount}}
 				@endif
 					</input></div></td>
 				<td>
