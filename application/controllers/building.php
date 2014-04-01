@@ -15,7 +15,7 @@ class Building_Controller extends Base_Controller {
 	public function action_budget()
 	{
 		if(Session::has('user')){
-			if(Input::has('submit')){
+			if(Input::has('submit') || Input::has('save')){
 				// Submitted Budget
 				$values = Input::get();
 				var_dump($vales);
