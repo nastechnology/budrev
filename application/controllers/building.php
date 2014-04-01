@@ -79,7 +79,7 @@ class Building_Controller extends Base_Controller {
 											$budgettotal->amount = $budgettotal->amount - $tAmt;
 											$fundTotal = $fundTotal + $tAmt;
 
-											var_dump($fundTotal);
+											
 
 											foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->order_by('fyyear','DESC')->get() as $value) {
 												$string .= $value->fyyear . " : $".$value->amount."\n";
