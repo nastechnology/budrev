@@ -63,7 +63,7 @@ class Building_Controller extends Base_Controller {
 									$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
 
 									$prevFund = "";
-									$fundTotal = "0.00";
+									$fundTotal = 0.00;
 									foreach($entries as $key=>$obj){
 										if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9'){
 											$arrBudgets[] = $obj;
@@ -73,7 +73,7 @@ class Building_Controller extends Base_Controller {
 											if($prevFund != $obj->fund){
 												$prevFund = $obj->fund;
 												$arrFundTotals[$obj->fund] = $fundTotal;
-												$fundTotal = "";
+												$fundTotal = 0.00;
 											}
 
 											$budgettotal->amount = $budgettotal->amount - $arrProposed[$obj->id]->amount;
