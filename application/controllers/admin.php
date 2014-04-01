@@ -784,7 +784,11 @@ class Admin_Controller  extends Base_Controller {
 						foreach ($values as $name=>$value) {
 							echo $name . ":::" . $value . "<br>";
 
-
+							if($submit == "Submit"){
+								echo "Submit Data";
+							} else {
+								echo "Save Data";
+							}
 							// list($p,$buildingbudget_id) = explode("-",$name);
 							// $bbp = new BuildingBudgetProposed;
 							// $bb = BuildingBudget::find($buildingbudget_id);
