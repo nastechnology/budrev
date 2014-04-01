@@ -19,9 +19,8 @@ class Building_Controller extends Base_Controller {
 			if(Input::has('submit') || Input::has('save')){
 				// Submitted Budget
 
-				$values = Input::all();
-				var_dump($vales);
-				exit();
+				$values = Input::get();
+
 				$submit = array_pop($values);
 
 				$fy = "FY".(date('y')+1);
@@ -29,7 +28,12 @@ class Building_Controller extends Base_Controller {
 					list($p,$buildingbudget_id) = explode("-",$name);
 					$bbp = new BuildingBudgetProposed;
 					$bb = BuildingBudget::find($buildingbudget_id);
-					$bb->is_proposed = '1';
+					if($submit == "Submit"){
+						$bb->is_proposed = '1';
+					} else {
+						$bb->is_proposed = '0';
+					}
+
 
 					$bbp->buildingbudget_id = $buildingbudget_id;
 					$bbp->fyyear = $fy;
@@ -39,8 +43,8 @@ class Building_Controller extends Base_Controller {
 						$bbp->amount = $value;
 					}
 
-					//$bb->save();
-					//$bbp->save();
+					$bb->save();
+					$bbp->save();
 				}
 				Session::flash('status_success', 'Your proposed building budget has been submitted');
 				return Redirect::to('/building');
@@ -65,6 +69,8 @@ class Building_Controller extends Base_Controller {
 				    		$arrBudgets[] = $obj;
 				    		$string = "";
 
+								$arrProposed[$obj->id] = BuildingBudgetProposed::where('buildingbudget_id','=',$obj->id)->first();
+
 				    		foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->order_by('fyyear','DESC')->get() as $value) {
 				    			$string .= $value->fyyear . " : $".$value->amount."\n";
 				    		}
@@ -73,7 +79,7 @@ class Building_Controller extends Base_Controller {
 							}
 			    	}
 
-			    	return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended,'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
+			    	return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended, 'proposed'=>$arrProposed, 'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');
 		    	} else {
 		    		return View::make('admin.buildingbudget2')->nest('nav','partials.nav2');
 		    	}

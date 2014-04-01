@@ -4,7 +4,7 @@
 @include('plugins.status')
 <div class="page-header"><h1>Building Budgets <small>All Budgets</small></h1></div>
 <h3 id="money">$<span id="budgettotal">{{ $budgettotal }}</span></h3>
-<form name='budreport' method='post' action='/admin/building/budget'>
+<form name='budreport' method='post' action='/building/budget'>
 <table class='table-striped table'>
 	<thead>
 		<tr>
@@ -27,12 +27,12 @@
 		@foreach($budgets as $budget)
 		  @if($prevFund != $budget->fund)
 			<tr>
-				<td colspan="12"> Fund: 00{{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
+				<td colspan="12"> Fund: {{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">0.00</span></h3></td>
 			</tr>
 			@endif
 			<tr>
 				<td>{{ $budget->ti }}</td>
-				<td>00{{ $budget->fund }}</td>
+				<td>{{ $budget->fund }}</td>
 				<td>{{ $budget->function }}</td>
 				<td>{{ $budget->object }}</td>
 				<td>{{ $budget->scc }}</td>
@@ -41,7 +41,11 @@
 				<td>{{ $budget->il }}</td>
 				<td>{{ $budget->job }}</td>
 				<td>{{ $budget->description }}</td>
-				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})"></input></div></td>
+				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})">
+				@if(!is_null($proposed[$budget->id]))
+				{{$proposed[$budget->id]}}
+				@endif
+					</input></div></td>
 				<td>
 				<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 				</td>
