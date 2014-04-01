@@ -4,7 +4,11 @@
 @include('plugins.status')
 <div class="page-header"><h1>Building Budgets <small>All Budgets</small></h1></div>
 <h3 id="money">$<span id="budgettotal">{{ $budgettotal }}</span></h3>
+@if(isset($edit))
+<form name='budreport' method='post' action='/building/budget/edit'>
+@else
 <form name='budreport' method='post' action='/building/budget'>
+@endif
 <table class='table-striped table'>
 	<thead>
 		<tr>
@@ -41,7 +45,7 @@
 				<td>{{ $budget->il }}</td>
 				<td>{{ $budget->job }}</td>
 				<td>{{ $budget->description }}</td>
-				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})" 
+				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})"
 				@if(!is_null($proposed[$budget->id]))
 				value="{{$proposed[$budget->id]->amount}}"
 				@endif
