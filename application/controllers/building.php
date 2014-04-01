@@ -71,8 +71,8 @@ class Building_Controller extends Base_Controller {
 
                       $arrProposed[$obj->id] = BuildingBudgetProposed::where('buildingbudget_id','=',$obj->id)->first();
 											if($prevFund != $obj->fund){
+												$arrFundTotals[$prevFund] = $fundTotal;
 												$prevFund = $obj->fund;
-												$arrFundTotals[$obj->fund] = $fundTotal;
 												$fundTotal = 0.00;
 											}
 											$tAmt = $arrProposed[$obj->id]->amount;
