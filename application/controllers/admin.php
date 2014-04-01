@@ -771,33 +771,35 @@ class Admin_Controller  extends Base_Controller {
 			$user = Session::get('user');
 			switch ($param) {
 				case 'budget':
-					if(Input::has('submit')){
+					if(Input::has('submit') || Input::has('save')){
 						// Submitted Budget
 
 						$values = Input::get();
-						var_dump($vales);
-						exit();
-						$submit = array_pop($values);
+						//var_dump($vales);
+						//exit();
+						//$submit = array_pop($values);
 
 
 						$fy = "FY".(date('y')+1);
 						foreach ($values as $name=>$value) {
-							list($p,$buildingbudget_id) = explode("-",$name);
-							$bbp = new BuildingBudgetProposed;
-							$bb = BuildingBudget::find($buildingbudget_id);
-							$bb->is_proposed = '1';
-
-							$bbp->buildingbudget_id = $buildingbudget_id;
-							$bbp->fyyear = $fy;
-							if($value == null || $value == ""){
-								$bbp->amount = '0.00';
-							} else {
-								$bbp->amount = $value;
-							}
-
-							$bb->save();
-							$bbp->save();
+							echo $name . ":::" . $value . "<br>";
+							// list($p,$buildingbudget_id) = explode("-",$name);
+							// $bbp = new BuildingBudgetProposed;
+							// $bb = BuildingBudget::find($buildingbudget_id);
+							// //$bb->is_proposed = '1';
+							//
+							// $bbp->buildingbudget_id = $buildingbudget_id;
+							// $bbp->fyyear = $fy;
+							// if($value == null || $value == ""){
+							// 	$bbp->amount = '0.00';
+							// } else {
+							// 	$bbp->amount = $value;
+							// }
+							//
+							// $bb->save();
+							// $bbp->save();
 						}
+						exit();
 						Session::flash('status_success', 'Your proposed building budget has been submitted');
 						return Redirect::to('/admin/building');
 					} else {
