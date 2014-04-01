@@ -41,11 +41,11 @@
 				<td>{{ $budget->il }}</td>
 				<td>{{ $budget->job }}</td>
 				<td>{{ $budget->description }}</td>
-				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})">
+				<td><div class='input-prepend'><span class='add-on'>$</span><input class='input-mini' type='text' name='proposed-{{ $budget->id }}' onchange="subtractFromBudget(this,document.getElementById('budgettotal'),{{$budget->fund}})" 
 				@if(!is_null($proposed[$budget->id]))
-				{{$proposed[$budget->id]->amount}}
+				value="{{$proposed[$budget->id]->amount}}"
 				@endif
-					</input></div></td>
+					></div></td>
 				<td>
 				<a href="#" class="btn btn-info" rel="popover" title="Previous Years" data-content="{{ $expended[$budget->id] }}">Previous Years</a>
 				</td>
