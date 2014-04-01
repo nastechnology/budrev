@@ -777,12 +777,14 @@ class Admin_Controller  extends Base_Controller {
 						$values = Input::get();
 						//var_dump($vales);
 						//exit();
-						//$submit = array_pop($values);
+						$submit = array_pop($values);
 
-
+						var_dump($submit);
 						$fy = "FY".(date('y')+1);
 						foreach ($values as $name=>$value) {
 							echo $name . ":::" . $value . "<br>";
+
+
 							// list($p,$buildingbudget_id) = explode("-",$name);
 							// $bbp = new BuildingBudgetProposed;
 							// $bb = BuildingBudget::find($buildingbudget_id);
