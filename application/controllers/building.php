@@ -71,7 +71,7 @@ class Building_Controller extends Base_Controller {
 
                       $arrProposed[$obj->id] = BuildingBudgetProposed::where('buildingbudget_id','=',$obj->id)->first();
 											if($prevFund != $obj->fund){
-												$arrFundTotals[$prevFund] = $fundTotal;
+												$arrFundTotals[$prevFund] = "$fundTotal";
 												$prevFund = $obj->fund;
 												$fundTotal = 0.00;
 											}
@@ -79,7 +79,7 @@ class Building_Controller extends Base_Controller {
 											$budgettotal->amount = $budgettotal->amount - $tAmt;
 											$fundTotal = $fundTotal + $tAmt;
 
-											
+
 
 											foreach (BuildingBudgetExpended::where('buildingbudget_id','=',$obj->id)->order_by('fyyear','DESC')->get() as $value) {
 												$string .= $value->fyyear . " : $".$value->amount."\n";
@@ -88,7 +88,7 @@ class Building_Controller extends Base_Controller {
 											$arrExpended[$obj->id] = $string;
 										}
 									}
-									$arrFundTotals[$prevFund] = $fundTotal;
+									$arrFundTotals[$prevFund] = "$fundTotal";
 									var_dump($arrFundTotals);
 								}
 							return View::make('admin.buildingbudget', array('budgets'=>$arrBudgets,'expended'=>$arrExpended, 'fundTotal'=>$arrFundTotals,'edit'=>true, 'proposed'=>$arrProposed, 'budgettotal'=>$budgettotal->amount))->nest('nav','partials.nav2');

@@ -36,9 +36,9 @@
 			<tr>
 				<td colspan="12"> Fund: {{ $budget->fund }} - Fund Total: <h3 id="money{{$budget->fund}}">$<span id="00{{$budget->fund}}total">
 				@if(isset($edit))
-					{{$fundTotal[$budget->fund]}}
+					{{ $fundTotal[$budget->fund] }}
 				@else
-				  {{$fundTotal}}
+				  {{ $fundTotal }}
 				@endif
 				</span></h3></td>
 			</tr>
