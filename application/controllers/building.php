@@ -23,7 +23,7 @@ class Building_Controller extends Base_Controller {
 			}
 			switch ($param) {
 				case 'edit':
-				  if(Input::has('submit')){
+				  if(Input::has('submit') || Input::has('save')){
 							$values = Input::get();
 							$submit = array_pop($values);
 
