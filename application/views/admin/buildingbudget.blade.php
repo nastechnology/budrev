@@ -99,10 +99,11 @@
 		fundInit.innerHTML = newTotal.toFixed(2);
 	}
 
-	$(function() {
-	    $("html").bind("keypress", function(e) {
-	            if (e.keyCode == 13) return false;
-	      });
-	});
+	function TriggeredKey(e)
+	{
+    var keycode;
+    if (window.event) keycode = window.event.keyCode;
+    if (window.event.keyCode != 13 ) return false;
+	}
 </script>
 @endsection
