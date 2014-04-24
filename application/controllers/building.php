@@ -177,8 +177,7 @@ class Building_Controller extends Base_Controller {
 			if(Input::has('submit')){
 				// Submitted Revenues
 				$values = Input::get();
-				var_dump($values);
-				exit();
+				
 				$submit = array_pop($values);
 
 				$fy = "FY".(date('y')+1);
@@ -217,7 +216,7 @@ class Building_Controller extends Base_Controller {
 			    		$arrRevs[] = $obj;
 			    		$string = "";
 
-			    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
+			    		var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
 
 			    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
 			    			$string .= $value->fyyear . " : $".$value->amount."\n";
