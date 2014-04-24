@@ -65,7 +65,7 @@ class Building_Controller extends Base_Controller {
 									$prevFund = "";
 									$fundTotal = 0.00;
 									foreach($entries as $key=>$obj){
-										if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9'){
+										if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9' || $obj->fund == '7' || $obj->fund == '18'){
 											$arrBudgets[] = $obj;
 											$string = "";
 
