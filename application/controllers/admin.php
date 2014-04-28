@@ -991,7 +991,7 @@ class Admin_Controller  extends Base_Controller {
 
 						foreach ($values as $name=>$value) {
 							list($p,$buildingbudget_id) = explode("-",$name);
-							// echo "BuildingBudgetID :: " . $buildingbudget_id . "<br/>Before Setting Amount";
+							echo "BuildingBudgetID :: " . $buildingbudget_id . "<br/>Before Setting Amount";
 							$bbuildingproposed = BuildingBudgetProposed::where('buildingbudget_id','=',$buildingbudget_id)->first();
 							// var_dump($bbuildingproposed);
 
