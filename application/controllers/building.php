@@ -144,7 +144,7 @@ class Building_Controller extends Base_Controller {
 				    	$budgettotal = BuildingBudgetAmount::where('building_id','=', $user->building_id)->where('fyyear','=','FY'.$fy)->first();
 
 				    	foreach($entries as $key=>$obj){
-								if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9' || $obj->fund == '7' || $obj->fund == '18'){
+								if($obj->fund == '1' || $obj->fund == '3' || $obj->fund == '9' || $obj->fund == '7' || $obj->fund == '18' || $obj->fund == '300'){
 					    		$arrBudgets[] = $obj;
 					    		$string = "";
 
@@ -216,7 +216,7 @@ class Building_Controller extends Base_Controller {
 			    		$arrRevs[] = $obj;
 			    		$string = "";
 
-			    		var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
+			    		//var_dump(BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() );
 
 			    		foreach (BuildingRevenueExpended::where('buildingrevenue_id','=',$obj->id)->get() as $value) {
 			    			$string .= $value->fyyear . " : $".$value->amount."\n";
